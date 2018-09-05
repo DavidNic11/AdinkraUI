@@ -7,9 +7,11 @@
 #include <QPainter>
 #include <QStyleOption>
 
-Node::Node(GraphWidget *graphWidget)
+Node::Node(GraphWidget *graphWidget, bool isBoson)
     : graph(graphWidget)
 {
+    this->isBoson = isBoson;
+
     setFlag(ItemIsMovable);
     setFlag(ItemSendsGeometryChanges);
     setCacheMode(DeviceCoordinateCache);
@@ -108,7 +110,7 @@ void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
 
     // Add Fermion and Boson Colors Here
 
-    QColor color = QColor(r,g,b,alpha);
+    QColor color = (this->isBoson ? QColor(r,g,b,alpha) : QColor(71,67,76,255));
     QColor penColor = QColor(57,54,61,255);
 
     painter->setBrush(color);
