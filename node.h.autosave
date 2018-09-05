@@ -74,8 +74,22 @@ void Node::calculateForces(){
         qreal dy = vec.y();
         double l = 2.0 * (dx * dx *dy * dy);
         if(l > 0){
-            xvel += (dx * 150) / l;
-            yvel += (dy * 150.0)
+            xvel += (dx * 150.0) / l;
+            yvel += (dy * 150.0) / l;
         }
     }
+    
+    double weight = (edgeList.size() + 1) * 10;
+    foreach(Edge *edge, edgeList){
+        QPointF vec;
+        if (edge->sourceNode() == this){
+            vec = mapToItem(edge->destNode(), 0, 0);
+        }else{
+            vec = mapToItem(edge->sourceNode, 0, 0); 
+        }
+        xvel -= vec.x() / weight;
+        yvel -= vec.y() / weight;
+    }
+    if (qAbs(xvel) < 0.1 && qAbs(yvel) < 0.1){
+            xvel = yvel = 0;
 }
