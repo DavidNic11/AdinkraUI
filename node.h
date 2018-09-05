@@ -1,13 +1,12 @@
 #ifndef NODE_H
 #define NODE_H
 
-#endif // NODE_H
-
 #include <QGraphicsItem>
-#include <QPointF>
+#include <QList>
 
-#include <edge.h>
-#include <graphwidget.h>
+class Edge;
+class GraphWidget;
+class QGraphicsSceneMouseEvent;
 
 class Node : public QGraphicsItem {
 public:
@@ -17,9 +16,9 @@ public:
     QList<Edge *> edges() const;
 
     enum { Type = UserType + 1};
-  //  int type() const override {return type}
+    int type() const override {return Type;}
 
-    void calculateForeces();
+    void calculateForces();
     bool advancePosition();
     // Painting
     QRectF boundingRect() const override;
@@ -38,20 +37,5 @@ private:
     GraphWidget *graph;
 };
 
-// Constructor
-Node::Node(GraphWidget *graphWidget) : graph(graphWidget) {
-    setFlag(ItemIsMovable);
-    setFlag(ItemSendsGeometryChanges);
-    setCacheMode(DeviceCoordinateCache);
-    setZValue(-1);
-}
 
-//Methods
-void Node::addEdge(Edge *edge){
-    edgeList << edge;
-    edge->adjust();
-}
-
-QList<Edge *> Node::edges() const {
-    return edgeList;
-}
+#endif // NODE_H

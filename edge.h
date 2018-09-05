@@ -1,11 +1,9 @@
 #ifndef EDGE_H
 #define EDGE_H
 
-#endif // EDGE_H
-
 #include <QGraphicsItem>
 
-#include <node.h>
+class Node;
 
 class Edge : public QGraphicsItem {
 public:
@@ -30,3 +28,5 @@ private:
     QPointF destPoint;
     qreal arrowSize;
 };
+
+#endif // EDGE_H

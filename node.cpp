@@ -1,43 +1,12 @@
-#ifndef NODE_H
-#define NODE_H
+#include "edge.h"
+#include "node.h"
+#include "graphwidget.h"
 
-#endif // NODE_H
+#include <QGraphicsScene>
+#include <QGraphicsSceneMouseEvent>
+#include <QPainter>
+#include <QStyleOption>
 
-#include <QGraphicsItem>
-#include <QPointF>
-#include <QStyleOptionGraphicsItem>
-
-#include <edge.h>
-#include <graphwidget.h>
-
-class Node : public QGraphicsItem {
-public:
-    Node(GraphWidget *graphWidget);
-
-    void addEdge(Edge *edge);
-    QList<Edge *> edges() const;
-
-    enum { Type = UserType + 1};
-  //  int type() const override {return type}
-
-    void calculateForces();
-    bool advancePosition();
-    // Painting
-    QRectF boundingRect() const override;
-    QPainterPath shape() const override;
-    void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
-
-protected:
-    QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
-    // Mouse Events
-    void mousePressEvent(QGraphicsSceneMouseEvent *event) override;
-    void mouseReleaseEvent(QGraphicsSceneMouseEvent *event) override;
-
-private:
-    QList<Edge *> edgeList;
-    QPointF newPos;
-    GraphWidget *graph;
-};
 
 // Constructor
 Node::Node(GraphWidget *graphWidget) : graph(graphWidget) {
@@ -64,7 +33,7 @@ void Node::calculateForces(){
     }
     qreal xvel = 0;
     qreal yvel = 0;
-    
+
     foreach(QGraphicsItem *item, scene()->items()){
         Node *node = qgraphicsitem_cast<Node *>(item);
         if(!node){
@@ -79,23 +48,23 @@ void Node::calculateForces(){
             yvel += (dy * 150.0) / l;
         }
     }
-    
+
     double weight = (edgeList.size() + 1) * 10;
     foreach(Edge *edge, edgeList){
         QPointF vec;
         if (edge->sourceNode() == this){
             vec = mapToItem(edge->destNode(), 0, 0);
         }else{
-            vec = mapToItem(edge->sourceNode, 0, 0); 
+            vec = mapToItem(edge->sourceNode(), 0, 0);
         }
         xvel -= vec.x() / weight;
         yvel -= vec.y() / weight;
     }
-    
+
     if(qAbs(xvel) < 0.1 && qAbs(yvel) < 0.1){
         xvel = yvel = 0;
      }
-    
+
     QRectF sceneRect = scene()->sceneRect();
        newPos = pos() + QPointF(xvel, yvel);
        newPos.setX(qMin(qMax(newPos.x(), sceneRect.left() + 10), sceneRect.right() - 10));
