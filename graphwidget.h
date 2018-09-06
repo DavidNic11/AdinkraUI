@@ -28,10 +28,6 @@ protected:
     void drawBackground(QPainter *painter, const QRectF &rect) override;
 
     void scaleView(qreal scaleFactor);
-
-private:
-    int timerId;
-    Node *centerNode;
 };
 
 #endif // GRAPHWIDGET_H

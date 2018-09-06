@@ -18,8 +18,6 @@ public:
     enum { Type = UserType + 1};
     int type() const override {return Type;}
 
-    void calculateForces();
-    bool advancePosition();
     // Painting
     QRectF boundingRect() const override;
     QPainterPath shape() const override;

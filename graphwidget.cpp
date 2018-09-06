@@ -8,7 +8,7 @@
 #include <QRandomGenerator>
 
 GraphWidget::GraphWidget(QWidget *parent)
-    : QGraphicsView(parent), timerId(0)
+    : QGraphicsView(parent)
 {
     QGraphicsScene *scene = new QGraphicsScene(this);
     scene->setItemIndexMethod(QGraphicsScene::NoIndex);
@@ -20,7 +20,7 @@ GraphWidget::GraphWidget(QWidget *parent)
     setTransformationAnchor(AnchorUnderMouse);
     scale(qreal(0.8), qreal(0.8));
     setMinimumSize(400, 400);
-    setWindowTitle(tr("Elastic Nodes"));
+    setWindowTitle(tr("Adinkra Nodes"));
 
     Node *node1 = new Node(this, true);
     Node *node2 = new Node(this, false);
@@ -83,24 +83,23 @@ GraphWidget::GraphWidget(QWidget *parent)
 
 void GraphWidget::itemMoved()
 {
-    if (!timerId)
-        timerId = startTimer(1000 / 25);
+
 }
 
 void GraphWidget::keyPressEvent(QKeyEvent *event)
 {
     switch (event->key()) {
     case Qt::Key_Up:
-        centerNode->moveBy(0, -20);
+        //centerNode->moveBy(0, -20);
         break;
     case Qt::Key_Down:
-        centerNode->moveBy(0, 20);
+        //centerNode->moveBy(0, 20);
         break;
     case Qt::Key_Left:
-        centerNode->moveBy(-20, 0);
+        //centerNode->moveBy(-20, 0);
         break;
     case Qt::Key_Right:
-        centerNode->moveBy(20, 0);
+        //centerNode->moveBy(20, 0);
         break;
     case Qt::Key_Plus:
         zoomIn();
