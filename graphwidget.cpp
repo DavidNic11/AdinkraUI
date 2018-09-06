@@ -32,6 +32,8 @@ GraphWidget::GraphWidget(QWidget *parent)
     Node *node7 = new Node(this, true);
     Node *node8 = new Node(this, false);
 
+    Node *center = new Node(this, false);
+
     scene->addItem(node1);
     scene->addItem(node2);
     scene->addItem(node3);
@@ -56,22 +58,21 @@ GraphWidget::GraphWidget(QWidget *parent)
     //Back Face
     scene->addItem(new Edge(node5, node7, true));
     scene->addItem(new Edge(node7, node2, false));
-    scene->addItem(new Edge(node8, node7, false));
+    scene->addItem(new Edge(node7, node8, false));
     scene->addItem(new Edge(node6, node8, false));
 
     //Right Side
     scene->addItem(new Edge(node3, node8, true));
 
-    node1->setPos(-100, -100);
-    node2->setPos(-100, 100);
-    node3->setPos(100, 100);
-    node4->setPos(100, -100);
+    node1->setPos(-100 - 25, -100 + 25);
+    node2->setPos(-100 - 25, 100 + 25);
+    node3->setPos(100 - 25, 100 + 25);
+    node4->setPos(100 - 25, -100 + 25);
 
-    node5->setPos(-25, -175);
-    node6->setPos(175, -175);
-    node7->setPos(-25, 25);
-    node8->setPos(175, 25);
-
+    node5->setPos(-25 - 25, -175 + 25);
+    node6->setPos(175 - 25, -175 + 25);
+    node7->setPos(-25 - 25, 25 + 25);
+    node8->setPos(175 - 25, 25 + 25);
     /*
      * TODO:
      *  Add a number system for nodes
