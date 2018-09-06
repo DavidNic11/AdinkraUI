@@ -12,8 +12,6 @@ class GraphWidget : public QGraphicsView
 public:
     GraphWidget(QWidget *parent = 0);
 
-    void itemMoved();
-
 public slots:
     void shuffle();
     void zoomIn();

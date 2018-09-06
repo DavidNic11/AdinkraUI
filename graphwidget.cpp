@@ -81,11 +81,6 @@ GraphWidget::GraphWidget(QWidget *parent)
     */
 }
 
-void GraphWidget::itemMoved()
-{
-
-}
-
 void GraphWidget::keyPressEvent(QKeyEvent *event)
 {
     switch (event->key()) {
