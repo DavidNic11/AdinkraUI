@@ -7,7 +7,7 @@ class Node;
 
 class Edge : public QGraphicsItem {
 public:
-    Edge(Node *sourceNode, Node *destNode);
+    Edge(Node *sourceNode, Node *destNode, bool isDashed);
 
     Node *sourceNode() const;
     Node *destNode() const;
@@ -27,6 +27,8 @@ private:
     QPointF sourcePoint;
     QPointF destPoint;
     qreal arrowSize;
+
+    bool isDashed;
 };
 
 #endif // EDGE_H

@@ -32,10 +32,10 @@ GraphWidget::GraphWidget(QWidget *parent)
     scene->addItem(node3);
     scene->addItem(node4);
 
-    scene->addItem(new Edge(node1, node2));
-    scene->addItem(new Edge(node4, node1));
-    scene->addItem(new Edge(node3, node2));
-    scene->addItem(new Edge(node4, node3));
+    scene->addItem(new Edge(node1, node2, true));
+    scene->addItem(new Edge(node4, node1, false));
+    scene->addItem(new Edge(node3, node2, false));
+    scene->addItem(new Edge(node4, node3, false));
 
     node1->setPos(-100, -100);
     node2->setPos(-100, 100);
