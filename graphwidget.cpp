@@ -27,21 +27,57 @@ GraphWidget::GraphWidget(QWidget *parent)
     Node *node3 = new Node(this, true);
     Node *node4 = new Node(this, false);
 
+    Node *node5 = new Node(this, false);
+    Node *node6 = new Node(this, true);
+    Node *node7 = new Node(this, true);
+    Node *node8 = new Node(this, false);
+
     scene->addItem(node1);
     scene->addItem(node2);
     scene->addItem(node3);
     scene->addItem(node4);
 
+    scene->addItem(node5);
+    scene->addItem(node6);
+    scene->addItem(node7);
+    scene->addItem(node8);
+
+    //Front Face
     scene->addItem(new Edge(node1, node2, true));
     scene->addItem(new Edge(node4, node1, false));
     scene->addItem(new Edge(node3, node2, false));
     scene->addItem(new Edge(node4, node3, false));
+
+    //Left Side
+    scene->addItem(new Edge(node5, node1, true));
+    scene->addItem(new Edge(node5, node6, false));
+    scene->addItem(new Edge(node4, node6, false));
+
+    //Back Face
+    scene->addItem(new Edge(node5, node7, true));
+    scene->addItem(new Edge(node7, node2, false));
+    scene->addItem(new Edge(node8, node7, false));
+    scene->addItem(new Edge(node6, node8, false));
+
+    //Right Side
+    scene->addItem(new Edge(node3, node8, true));
 
     node1->setPos(-100, -100);
     node2->setPos(-100, 100);
     node3->setPos(100, 100);
     node4->setPos(100, -100);
 
+    node5->setPos(-25, -175);
+    node6->setPos(175, -175);
+    node7->setPos(-25, 25);
+    node8->setPos(175, 25);
+
+    /*
+     * TODO:
+     *  Add a number system for nodes
+     *  Figure out how to center everything
+     *  Create from Scratch (automated)
+    */
 }
 
 void GraphWidget::itemMoved()
