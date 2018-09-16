@@ -8,8 +8,31 @@ class Edge;
 class GraphWidget;
 class QGraphicsSceneMouseEvent;
 
+struct ActualCoordinate{
+    int x;
+    int y;
+    int z;
+
+    int d = 150;
+    int s = 100;
+
+    ActualCoordinate(int xCoord, int yCoord, int zCoord) : x(xCoord),y(yCoord),z(zCoord){}
+};
+
+struct ScreenCoordinate{
+    double x;
+    double y;
+
+    ScreenCoordinate(double xCoord, double yCoord) : x(xCoord), y(yCoord) {}
+};
+
 class Node : public QGraphicsItem {
 public:
+
+    // Coordinate Stuff
+    ActualCoordinate *actualCoord;
+    ScreenCoordinate *screenCoord;
+
     Node(GraphWidget *graphWidget, bool isBoson);
 
     void addEdge(Edge *edge);
@@ -23,6 +46,10 @@ public:
     QPainterPath shape() const override;
     void paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWidget *widget) override;
 
+    // Projection
+    void projectPoint();
+    void setACoord(ActualCoordinate *a);
+
 protected:
     QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
     // Mouse Events
@@ -34,6 +61,10 @@ private:
     QPointF newPos;
     GraphWidget *graph;
     bool isBoson;
+
+
+
+    //
 };
 
 

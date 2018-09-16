@@ -2,13 +2,15 @@
 #include "node.h"
 #include "graphwidget.h"
 
+
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
 #include <QPainter>
 #include <QStyleOption>
+#include <QDebug>
 
 Node::Node(GraphWidget *graphWidget, bool isBoson)
-    : graph(graphWidget)
+    : graph(graphWidget), actualCoord(nullptr), screenCoord(nullptr)
 {
     this->isBoson = isBoson;
 
@@ -88,4 +90,22 @@ void Node::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 {
     update();
     QGraphicsItem::mouseReleaseEvent(event);
+}
+
+void Node::projectPoint(){
+    qInfo() <<"X = " <<actualCoord->x;
+     qInfo() <<"Y = " <<actualCoord->y;
+      qInfo() <<"Z = " <<actualCoord->z;
+       qInfo() <<"S = " <<actualCoord->s;
+        qInfo() <<"D = " <<actualCoord->d;
+
+    double xPrime = double(actualCoord->x * actualCoord->d) / double(actualCoord->z + actualCoord->s + actualCoord->d);
+    double yPrime = double(actualCoord->y * actualCoord->d) / double(actualCoord->z + actualCoord->s + actualCoord->d);
+     qInfo()<<"XPRIME = " << xPrime;
+      qInfo()<<"YPRIME = " << yPrime;
+
+    screenCoord = new ScreenCoordinate(xPrime, yPrime);
+}
+void Node::setACoord(ActualCoordinate *a){
+    actualCoord = a;
 }
