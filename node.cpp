@@ -8,6 +8,7 @@
 #include <QPainter>
 #include <QStyleOption>
 #include <QDebug>
+#include <math.h>
 
 Node::Node(GraphWidget *graphWidget, bool isBoson)
     : graph(graphWidget), actualCoord(nullptr), screenCoord(nullptr)
@@ -93,19 +94,56 @@ void Node::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 }
 
 void Node::projectPoint(){
-    qInfo() <<"X = " <<actualCoord->x;
-     qInfo() <<"Y = " <<actualCoord->y;
-      qInfo() <<"Z = " <<actualCoord->z;
-       qInfo() <<"S = " <<actualCoord->s;
-        qInfo() <<"D = " <<actualCoord->d;
+//    qInfo() <<"X = " <<actualCoord->x;
+//     qInfo() <<"Y = " <<actualCoord->y;
+//      qInfo() <<"Z = " <<actualCoord->z;
+//       qInfo() <<"S = " <<actualCoord->s;
+//        qInfo() <<"D = " <<actualCoord->d;
 
     double xPrime = double(actualCoord->x * actualCoord->d) / double(actualCoord->z + actualCoord->s + actualCoord->d);
     double yPrime = double(actualCoord->y * actualCoord->d) / double(actualCoord->z + actualCoord->s + actualCoord->d);
-     qInfo()<<"XPRIME = " << xPrime;
-      qInfo()<<"YPRIME = " << yPrime;
+     //qInfo()<<"XPRIME = " << xPrime;
+      //qInfo()<<"YPRIME = " << yPrime;
 
     screenCoord = new ScreenCoordinate(xPrime, yPrime);
 }
 void Node::setACoord(ActualCoordinate *a){
     actualCoord = a;
+}
+
+
+// Coordinate Stuff (Probably should move this to a new file)
+void ActualCoordinate::rotateX(double theta){
+    double mult [3][1] = {{0},{0},{0}};
+
+    double rotationMatrix[3][3] = {{cos(theta), -1*sin(theta), 0},
+                                    {sin(theta), cos(theta), 0},
+                                    {0, 0, 1}};
+
+    double xyzVector [3][1] = {{x},
+                            {y},
+                            {z}};
+//    for(int i = 0; i < 3; i++){
+//        for(int j =0; j < 3; j++){
+//            qInfo() << rotationMatrix[i][j];
+//        }
+//        qInfo();
+//    }
+    for(int i = 0; i < 3; i++){
+        for(int j = 0; j < 1; j++){
+            for(int k = 0; k < 3; k++){
+                mult[i][j] += rotationMatrix[i][k] * xyzVector[k][j];
+            }
+        }
+    }
+
+//    for(int i = 0; i < 3; i++){
+//        for(int j =0; j < 1; j++){
+//            qInfo() << mult[i][j];
+//        }
+//    }
+    qInfo() << "\n\n\n";
+    x = mult[0][0];
+    y = mult[1][0];
+    z = mult[2][0];
 }

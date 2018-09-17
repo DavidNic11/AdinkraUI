@@ -8,6 +8,8 @@
 #include <QRandomGenerator>
 #include <QDebug>
 
+# define M_PI           3.14159265358979323846  /* pi */
+
 GraphWidget::GraphWidget(QWidget *parent)
     : QGraphicsView(parent)
 {
@@ -34,25 +36,36 @@ GraphWidget::GraphWidget(QWidget *parent)
     Node *node8 = new Node(this, false);
 
     // Screen Coordinate
-//    ActualCoordinate *a1 = new ActualCoordinate(1,1,-1);
-//    ActualCoordinate *a2 = new ActualCoordinate(-1,1,-1);
-//    ActualCoordinate *a3 = new ActualCoordinate(1,-1,-1);
-//    ActualCoordinate *a4 = new ActualCoordinate(-1,-1,-1);
-//    ActualCoordinate *a5 = new ActualCoordinate(1,1,1);
-//    ActualCoordinate *a6 = new ActualCoordinate(-1,1,1);
-//    ActualCoordinate *a7 = new ActualCoordinate(1,-1,1);
-//    ActualCoordinate *a8 = new ActualCoordinate(-1,-1,1);
+    ActualCoordinate *a1 = new ActualCoordinate(100,100,-100);
+    ActualCoordinate *a2 = new ActualCoordinate(-100,100,-100);
+    ActualCoordinate *a3 = new ActualCoordinate(100,-100,-100);
+    ActualCoordinate *a4 = new ActualCoordinate(-100,-100,-100);
+    ActualCoordinate *a5 = new ActualCoordinate(100,100,100);
+    ActualCoordinate *a6 = new ActualCoordinate(-100,100,100);
+    ActualCoordinate *a7 = new ActualCoordinate(100,-100,100);
+    ActualCoordinate *a8 = new ActualCoordinate(-100,-100,100);
+
+    a1->rotateX(M_PI/4);
+    a2->rotateX(M_PI/4);
+    a3->rotateX(M_PI/4);
+    a4->rotateX(M_PI/4);
+    a5->rotateX(M_PI/4);
+    a6->rotateX(M_PI/4);
+    a7->rotateX(M_PI/4);
+    a8->rotateX(M_PI/4);
 
     // Give the people what they want
-    node1->setACoord(new ActualCoordinate(100,100,-100));
-    node2->setACoord(new ActualCoordinate(-100,100,-100));
-    node3->setACoord(new ActualCoordinate(100,-100,-100));
-    node4->setACoord(new ActualCoordinate(-100,-100,-100));
-    node5->setACoord(new ActualCoordinate(100,100,100));
-    node6->setACoord(new ActualCoordinate(-100,100,100));
-    node7->setACoord(new ActualCoordinate(100,-100,100));
-    node8->setACoord(new ActualCoordinate(-100,-100,100));
+    node1->setACoord(a1);
+    node2->setACoord(a2);
+    node3->setACoord(a3);
+    node4->setACoord(a4);
+    node5->setACoord(a5);
+    node6->setACoord(a6);
+    node7->setACoord(a7);
+    node8->setACoord(a8);
     //Node *center = new Node(this, false);
+
+
 
     scene->addItem(node1);
     scene->addItem(node2);

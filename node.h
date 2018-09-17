@@ -9,14 +9,18 @@ class GraphWidget;
 class QGraphicsSceneMouseEvent;
 
 struct ActualCoordinate{
-    int x;
-    int y;
-    int z;
+    double x;
+    double y;
+    double z;
 
     int d = 150;
     int s = 100;
 
     ActualCoordinate(int xCoord, int yCoord, int zCoord) : x(xCoord),y(yCoord),z(zCoord){}
+
+    void rotateX(double degree);
+    void rotateY(double degree);
+    void rotateZ(double degree);
 };
 
 struct ScreenCoordinate{
