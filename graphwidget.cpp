@@ -45,14 +45,14 @@ GraphWidget::GraphWidget(QWidget *parent)
     ActualCoordinate *a7 = new ActualCoordinate(100,-100,100);
     ActualCoordinate *a8 = new ActualCoordinate(-100,-100,100);
 
-    a1->rotateX(M_PI/4);
-    a2->rotateX(M_PI/4);
-    a3->rotateX(M_PI/4);
-    a4->rotateX(M_PI/4);
-    a5->rotateX(M_PI/4);
-    a6->rotateX(M_PI/4);
-    a7->rotateX(M_PI/4);
-    a8->rotateX(M_PI/4);
+    a1->rotateZ(M_PI/4);
+    a2->rotateZ(M_PI/4);
+    a3->rotateZ(M_PI/4);
+    a4->rotateZ(M_PI/4);
+    a5->rotateZ(M_PI/4);
+    a6->rotateZ(M_PI/4);
+    a7->rotateZ(M_PI/4);
+    a8->rotateZ(M_PI/4);
 
     // Give the people what they want
     node1->setACoord(a1);

@@ -123,12 +123,7 @@ void ActualCoordinate::rotateX(double theta){
     double xyzVector [3][1] = {{x},
                             {y},
                             {z}};
-//    for(int i = 0; i < 3; i++){
-//        for(int j =0; j < 3; j++){
-//            qInfo() << rotationMatrix[i][j];
-//        }
-//        qInfo();
-//    }
+
     for(int i = 0; i < 3; i++){
         for(int j = 0; j < 1; j++){
             for(int k = 0; k < 3; k++){
@@ -137,12 +132,54 @@ void ActualCoordinate::rotateX(double theta){
         }
     }
 
-//    for(int i = 0; i < 3; i++){
-//        for(int j =0; j < 1; j++){
-//            qInfo() << mult[i][j];
-//        }
-//    }
-    qInfo() << "\n\n\n";
+    x = mult[0][0];
+    y = mult[1][0];
+    z = mult[2][0];
+}
+
+void ActualCoordinate::rotateY(double theta){
+    double mult [3][1] = {{0},{0},{0}};
+
+    double rotationMatrix[3][3] = {{cos(theta), 0, sin(theta)},
+                                    {0, 1, 0},
+                                    {-1*sin(theta), 0, cos(theta)}};
+
+    double xyzVector [3][1] = {{x},
+                            {y},
+                            {z}};
+
+    for(int i = 0; i < 3; i++){
+        for(int j = 0; j < 1; j++){
+            for(int k = 0; k < 3; k++){
+                mult[i][j] += rotationMatrix[i][k] * xyzVector[k][j];
+            }
+        }
+    }
+
+    x = mult[0][0];
+    y = mult[1][0];
+    z = mult[2][0];
+}
+
+void ActualCoordinate::rotateZ(double theta){
+    double mult [3][1] = {{0},{0},{0}};
+
+    double rotationMatrix[3][3] = {{1, 0, 0},
+                                    {0, cos(theta), -1*sin(theta)},
+                                    {0, sin(theta), cos(theta)}};
+
+    double xyzVector [3][1] = {{x},
+                            {y},
+                            {z}};
+
+    for(int i = 0; i < 3; i++){
+        for(int j = 0; j < 1; j++){
+            for(int k = 0; k < 3; k++){
+                mult[i][j] += rotationMatrix[i][k] * xyzVector[k][j];
+            }
+        }
+    }
+
     x = mult[0][0];
     y = mult[1][0];
     z = mult[2][0];
