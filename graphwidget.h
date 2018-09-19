@@ -2,6 +2,7 @@
 #define GRAPHWIDGET_H
 
 #include <QGraphicsView>
+#include <Qtimer>
 
 class Node;
 
@@ -16,6 +17,7 @@ public slots:
     void shuffle();
     void zoomIn();
     void zoomOut();
+    void startAnimation();
 
 protected:
     void keyPressEvent(QKeyEvent *event) override;
@@ -26,6 +28,13 @@ protected:
     void drawBackground(QPainter *painter, const QRectF &rect) override;
 
     void scaleView(qreal scaleFactor);
+
+private:
+    QVector<Node*> nodeVector;
+    QTimer *timer;
+    int rotation;
+private slots:
+    void doStep();
 };
 
 #endif // GRAPHWIDGET_H

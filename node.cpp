@@ -11,7 +11,7 @@
 #include <math.h>
 
 Node::Node(GraphWidget *graphWidget, bool isBoson)
-    : graph(graphWidget), actualCoord(nullptr), screenCoord(nullptr)
+    : graph(graphWidget), actualCoord(nullptr), screenCoord(new ScreenCoordinate(0,0))
 {
     this->isBoson = isBoson;
 
@@ -105,7 +105,8 @@ void Node::projectPoint(){
      //qInfo()<<"XPRIME = " << xPrime;
       //qInfo()<<"YPRIME = " << yPrime;
 
-    screenCoord = new ScreenCoordinate(xPrime, yPrime);
+    screenCoord->x = xPrime;
+    screenCoord->y = yPrime;
 }
 void Node::setACoord(ActualCoordinate *a){
     actualCoord = a;

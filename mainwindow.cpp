@@ -6,6 +6,11 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
+
+    animation = new  QPropertyAnimation();
+    //animation->duration(10000);
+
+
 }
 
 MainWindow::~MainWindow()

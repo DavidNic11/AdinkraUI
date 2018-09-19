@@ -32,7 +32,6 @@ struct ScreenCoordinate{
 
 class Node : public QGraphicsItem {
 public:
-
     // Coordinate Stuff
     ActualCoordinate *actualCoord;
     ScreenCoordinate *screenCoord;
@@ -65,10 +64,6 @@ private:
     QPointF newPos;
     GraphWidget *graph;
     bool isBoson;
-
-
-
-    //
 };
 
 
