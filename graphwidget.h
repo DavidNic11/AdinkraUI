@@ -2,7 +2,7 @@
 #define GRAPHWIDGET_H
 
 #include <QGraphicsView>
-#include <Qtimer>
+#include <QTimer>
 
 class Node;
 
@@ -18,6 +18,7 @@ public slots:
     void zoomIn();
     void zoomOut();
     void startAnimation();
+    void stopAnimation();
 
 protected:
     void keyPressEvent(QKeyEvent *event) override;

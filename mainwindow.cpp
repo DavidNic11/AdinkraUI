@@ -7,13 +7,20 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui->setupUi(this);
 
-    animation = new  QPropertyAnimation();
-    //animation->duration(10000);
-
 
 }
 
 MainWindow::~MainWindow()
 {
     delete ui;
+}
+
+void MainWindow::on_pbStart_clicked()
+{
+    ui->widget->startAnimation();
+}
+
+void MainWindow::on_pbEnd_clicked()
+{
+    ui->widget->stopAnimation();
 }

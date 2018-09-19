@@ -47,9 +47,9 @@ GraphWidget::GraphWidget(QWidget *parent)
 
 
     for(int i = 0; i < 8; i++){
-        //qDebug() << i;
-        bool isB = (i&3) % 3 != 0;
-        nodeVector.append(new Node(this, (i > 4 ? !isB: isB)));
+        qDebug() << i;
+        bool isB = (i&3) % 3 == 0;
+        nodeVector.append(new Node(this, (i >= 4 ? !isB: isB)));
         nodeVector[i]->setACoord(new ActualCoordinate((i&1?-1:1)*100, (i&2?-1:1)*100,(i&4?-1:1)*-100));
         //nodeVector[i]->actualCoord->rotateZ(M_PI/6);
         scene->addItem(nodeVector[i]);
@@ -109,22 +109,26 @@ GraphWidget::GraphWidget(QWidget *parent)
     //Front Face
     scene->addItem(new Edge(nodeVector[0], nodeVector[1], true));
     scene->addItem(new Edge(nodeVector[0], nodeVector[2], false));
-    scene->addItem(new Edge(nodeVector[2], nodeVector[3], false));
-    scene->addItem(new Edge(nodeVector[1], nodeVector[3], false));
-
-    //Left Side
     scene->addItem(new Edge(nodeVector[0], nodeVector[4], true));
+
+    scene->addItem(new Edge(nodeVector[1], nodeVector[3], false));
+    scene->addItem(new Edge(nodeVector[1], nodeVector[5], true));
+
+    scene->addItem(new Edge(nodeVector[2], nodeVector[3], false));
     scene->addItem(new Edge(nodeVector[2], nodeVector[6], false));
 
-    //Back Face
-    scene->addItem(new Edge(nodeVector[6], nodeVector[4], false));
     scene->addItem(new Edge(nodeVector[4], nodeVector[5], false));
-    scene->addItem(new Edge(nodeVector[7], nodeVector[5], false));
+    //Left Side
+    scene->addItem(new Edge(nodeVector[6], nodeVector[4], false));
     scene->addItem(new Edge(nodeVector[6], nodeVector[7], true));
+
+    //Back face
+
+    scene->addItem(new Edge(nodeVector[7], nodeVector[5], false));
+
 
     //Right Side
     scene->addItem(new Edge(nodeVector[3], nodeVector[7], false));
-    scene->addItem(new Edge(nodeVector[1], nodeVector[5], true));
 
 //    node1->projectPoint();
 //    node2->projectPoint();
@@ -145,7 +149,7 @@ GraphWidget::GraphWidget(QWidget *parent)
 //    node7->setPos(node7->screenCoord->x, node7->screenCoord->y);  //(-25 - 25, 25 + 25);
 //    node8->setPos(node8->screenCoord->x, node8->screenCoord->y);  //(175 - 25, 25 + 25);
     connect(timer, &QTimer::timeout, this, &GraphWidget::doStep);
-    startAnimation();
+    //startAnimation();
 
     /*
      * TODO:
@@ -250,6 +254,11 @@ void GraphWidget::startAnimation(){
     timer->setInterval(20);
     timer->setSingleShot(false);
     timer->start();
+}
+
+void GraphWidget::stopAnimation()
+{
+    timer->stop();
 }
 
 void GraphWidget::doStep(){

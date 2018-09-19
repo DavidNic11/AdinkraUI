@@ -21,6 +21,10 @@ private:
 
     QPropertyAnimation *animation;
 
+public slots:
+    void on_pbStart_clicked();
+    void on_pbEnd_clicked();
+
 };
 
 #endif // MAINWINDOW_H
