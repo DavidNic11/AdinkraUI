@@ -19,6 +19,9 @@ public slots:
     void zoomOut();
     void startAnimation();
     void stopAnimation();
+    void rotXChanged(double newX);
+    void rotYChanged(double newY);
+    void rotZChanged(double newZ);
 
 protected:
     void keyPressEvent(QKeyEvent *event) override;
@@ -34,6 +37,7 @@ private:
     QVector<Node*> nodeVector;
     QTimer *timer;
     int rotation;
+    double rotX, rotY, rotZ;
 private slots:
     void doStep();
 };

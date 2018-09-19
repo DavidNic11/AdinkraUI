@@ -11,7 +11,7 @@
 # define M_PI           3.14159265358979323846  /* pi */
 
 GraphWidget::GraphWidget(QWidget *parent)
-    : QGraphicsView(parent), nodeVector(), timer(new QTimer(this))
+    : QGraphicsView(parent), nodeVector(), timer(new QTimer(this)), rotX(0), rotY(0), rotZ(0)
 {
     QGraphicsScene *scene = new QGraphicsScene(this);
     scene->setItemIndexMethod(QGraphicsScene::NoIndex);
@@ -47,7 +47,6 @@ GraphWidget::GraphWidget(QWidget *parent)
 
 
     for(int i = 0; i < 8; i++){
-        qDebug() << i;
         bool isB = (i&3) % 3 == 0;
         nodeVector.append(new Node(this, (i >= 4 ? !isB: isB)));
         nodeVector[i]->setACoord(new ActualCoordinate((i&1?-1:1)*100, (i&2?-1:1)*100,(i&4?-1:1)*-100));
@@ -261,12 +260,27 @@ void GraphWidget::stopAnimation()
     timer->stop();
 }
 
+void GraphWidget::rotXChanged(double newX)
+{
+    rotX = newX;
+}
+
+void GraphWidget::rotYChanged(double newY)
+{
+    rotY = newY;
+}
+
+void GraphWidget::rotZChanged(double newZ)
+{
+    rotZ = newZ;
+}
+
 void GraphWidget::doStep(){
-    rotation = rotation % 3600 + 1;
+    //rotation = rotation % 3600 + 1;
     for(int i = 0 ; i < 8 ; i++){
-       // nodeVector[i]->actualCoord->rotateX(M_PI/200 );
-        nodeVector[i]->actualCoord->rotateY(M_PI/200 );
-       // nodeVector[i]->actualCoord->rotateZ(M_PI/200 );
+        nodeVector[i]->actualCoord->rotateX(M_PI * rotX/180.0 );
+        nodeVector[i]->actualCoord->rotateY(M_PI * rotY/180.0 );
+        nodeVector[i]->actualCoord->rotateZ(M_PI * rotZ/180.0 );
         nodeVector[i]->projectPoint();
         nodeVector[i]->setPos(nodeVector[i]->screenCoord->x, nodeVector[i]->screenCoord->y);
     }

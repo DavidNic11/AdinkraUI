@@ -35,13 +35,13 @@
        <widget class="GraphWidget" name="widget" native="true"/>
       </item>
       <item row="3" column="1">
-       <widget class="QSpinBox" name="spinBox_2"/>
+       <widget class="QSpinBox" name="sbY"/>
       </item>
       <item row="2" column="1">
-       <widget class="QSpinBox" name="spinBox"/>
+       <widget class="QSpinBox" name="sbX"/>
       </item>
       <item row="4" column="1">
-       <widget class="QSpinBox" name="spinBox_3"/>
+       <widget class="QSpinBox" name="sbZ"/>
       </item>
       <item row="2" column="0">
        <widget class="QLabel" name="label">

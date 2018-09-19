@@ -6,7 +6,9 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-
+    connect(ui->sbX, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), ui->widget, &GraphWidget::rotXChanged);
+    connect(ui->sbY, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), ui->widget, &GraphWidget::rotYChanged);
+    connect(ui->sbZ, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), ui->widget, &GraphWidget::rotZChanged);
 
 }
 
