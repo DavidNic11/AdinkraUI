@@ -28,13 +28,15 @@ SOURCES += \
         mainwindow.cpp \
     edge.cpp \
     node.cpp \
-    graphwidget.cpp
+    graphwidget.cpp \
+    coordinates.cpp
 
 HEADERS += \
         mainwindow.h \
     node.h \
     edge.h \
-    graphwidget.h
+    graphwidget.h \
+    coordinates.h
 
 FORMS += \
         mainwindow.ui

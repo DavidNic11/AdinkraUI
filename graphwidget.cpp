@@ -45,6 +45,9 @@ GraphWidget::GraphWidget(QWidget *parent)
 //    nodeVector.append(node7);
 //    nodeVector.append(node8);
 
+//    int dimension = 4;
+//    int numNodes = (1 >> dimension);
+
 
     for(int i = 0; i < 8; i++){
         bool isB = (i&3) % 3 == 0;
