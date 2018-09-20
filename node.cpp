@@ -10,8 +10,8 @@
 #include <QDebug>
 #include <math.h>
 
-Node::Node(GraphWidget *graphWidget, bool isBoson)
-    : graph(graphWidget), actualCoord(nullptr), screenCoord(new ScreenCoordinate(0,0))
+Node::Node(GraphWidget *graphWidget, bool isBoson, int number)
+    : graph(graphWidget), actualCoord(nullptr), screenCoord(new ScreenCoordinate(0,0)), coordinates(nullptr), nodeNumber(number)
 {
     this->isBoson = isBoson;
 

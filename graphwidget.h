@@ -38,6 +38,8 @@ private:
     QTimer *timer;
     int rotation;
     double rotX, rotY, rotZ;
+
+    QVector<double>* createCoordinates(int dim, int nodeNumber);
 private slots:
     void doStep();
 };

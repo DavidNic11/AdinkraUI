@@ -17,11 +17,16 @@ class Coordinates
 public:
     Coordinates(int dim, QVector<double> *startingCoord);
 
+    double projectedX;
+    double projectedY;
+
     void projectPoint();
+    void setProjectedValues();
 private:
     int dimension;
     int d;
     int s;
+    int indexOfTwoD;
     QVector<CoordinateNode*> *allCoordinates;
 };
 

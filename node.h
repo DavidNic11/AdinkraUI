@@ -7,6 +7,7 @@
 class Edge;
 class GraphWidget;
 class QGraphicsSceneMouseEvent;
+class Coordinates;
 
 struct ActualCoordinate{
     double x;
@@ -36,7 +37,9 @@ public:
     ActualCoordinate *actualCoord;
     ScreenCoordinate *screenCoord;
 
-    Node(GraphWidget *graphWidget, bool isBoson);
+    Coordinates *coordinates;
+
+    Node(GraphWidget *graphWidget, bool isBoson, int number);
 
     void addEdge(Edge *edge);
     QList<Edge *> edges() const;
@@ -64,6 +67,7 @@ private:
     QPointF newPos;
     GraphWidget *graph;
     bool isBoson;
+    int nodeNumber;
 };
 
 
