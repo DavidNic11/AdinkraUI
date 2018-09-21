@@ -21,9 +21,17 @@ private:
 
     QPropertyAnimation *animation;
 
+    void createMenus();
+    void createActions();
+
+    QMenu *fileMenu;
+    QAction *printAction;
+
 public slots:
     void on_pbStart_clicked();
     void on_pbEnd_clicked();
+
+    void print();
 
 };
 
