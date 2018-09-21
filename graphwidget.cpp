@@ -47,7 +47,7 @@ GraphWidget::GraphWidget(QWidget *parent)
 //    nodeVector.append(node7);
 //    nodeVector.append(node8);
 
-    dimension = 4;
+    dimension = 3;
     int numNodes = (1 << dimension);
 
     QVector<QColor> colors;

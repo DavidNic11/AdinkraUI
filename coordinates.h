@@ -3,14 +3,14 @@
 
 #include <QVector>
 
-struct CoordinateNode{
+//struct CoordinateNode{
 
-    QVector<double> *coordinates;
-    double droppedCoord;
-    int dimension;
+//    QVector<double> *coordinates;
+//    double droppedCoord;
+//    int dimension;
 
-    CoordinateNode(double dropped, QVector<double> *coord, int dimension);
-};
+//    CoordinateNode(double dropped, QVector<double> *coord, int dimension);
+//};
 
 class Coordinates
 {
@@ -27,7 +27,7 @@ private:
     int d;
     int s;
     int indexOfTwoD;
-    QVector<CoordinateNode*> *allCoordinates;
+    QVector<double> coordinates;
 };
 
 #endif // COORDINATES_H
