@@ -17,7 +17,7 @@ GraphWidget::GraphWidget(QWidget *parent)
 {
     QGraphicsScene *scene = new QGraphicsScene(this);
     scene->setItemIndexMethod(QGraphicsScene::NoIndex);
-    scene->setSceneRect(-200, -200, 400, 400);
+    //scene->setSceneRect(-200, -200, 400, 400);
     setScene(scene);
     setCacheMode(CacheBackground);
     setViewportUpdateMode(BoundingRectViewportUpdate);
@@ -47,7 +47,7 @@ GraphWidget::GraphWidget(QWidget *parent)
 //    nodeVector.append(node7);
 //    nodeVector.append(node8);
 
-    dimension = 3;
+    dimension = 5;
     int numNodes = (1 << dimension);
 
     QVector<QColor> colors;
@@ -63,7 +63,7 @@ GraphWidget::GraphWidget(QWidget *parent)
            colors.append(nextColor);
        }
 
-    qDebug() << numNodes;
+    //qDebug() << numNodes;
 
     for(int i = 0; i < numNodes; i++){
         nodeVector.append(new Node(this, std::bitset<sizeof(int)>(i).count() % 2, i));
@@ -315,7 +315,20 @@ void GraphWidget::rotZChanged(double newZ)
 }
 
 void GraphWidget::doStep(){
-    //rotation = rotation % 3600 + 1;
+    for(int i = 0; i < (1 << dimension); i++){
+        //qDebug() << "Here";
+        //nodeVector[i]->coordinates->rotate(0,1,M_PI/200);
+        //nodeVector[i]->coordinates->rotate(0,2,M_PI/2000);
+        //nodeVector[i]->coordinates->rotate(0,3,M_PI/200);
+        //nodeVector[i]->coordinates->rotate(1,2,M_PI/200);
+        //nodeVector[i]->coordinates->rotate(1,3,M_PI/200);
+       // nodeVector[i]->coordinates->rotate(2,3,M_PI/200);
+
+//        qDebug() << nodeVector[i]->coordinates->projectedX;
+//        qDebug() << nodeVector[i]->coordinates->projectedY;
+
+        nodeVector[i]->setPos(nodeVector[i]->coordinates->projectedX, nodeVector[i]->coordinates->projectedY);
+    }
 //    for(int i = 0 ; i < 8 ; i++){
 //        nodeVector[i]->actualCoord->rotateX(M_PI * rotX/180.0 );
 //        nodeVector[i]->actualCoord->rotateY(M_PI * rotY/180.0 );
@@ -323,7 +336,7 @@ void GraphWidget::doStep(){
 //        nodeVector[i]->projectPoint();
 //        nodeVector[i]->setPos(nodeVector[i]->screenCoord->x, nodeVector[i]->screenCoord->y);
 //    }
-//    invalidateScene();
+    invalidateScene();
 }
 
 QVector<double>* GraphWidget::createCoordinates(int dim, int nodeNumber){

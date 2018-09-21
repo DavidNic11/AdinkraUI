@@ -22,6 +22,7 @@ public:
 
     void projectPoint();
     void setProjectedValues();
+    void rotate(int i, int j, double theta);
 private:
     int dimension;
     int d;
