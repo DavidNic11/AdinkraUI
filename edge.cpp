@@ -4,7 +4,7 @@
 #include <qmath.h>
 #include <QPainter>
 
-Edge::Edge(Node *sourceNode, Node *destNode, bool isDashed) : arrowSize(10) {
+Edge::Edge(Node *sourceNode, Node *destNode, bool isDashed, QColor edgeColor) : edgeColor(edgeColor), arrowSize(10)  {
     this->isDashed = isDashed;
     setAcceptedMouseButtons(0);
     source = sourceNode;
@@ -65,9 +65,9 @@ void Edge::paint(QPainter *painter, const QStyleOptionGraphicsItem *, QWidget *)
 
     // Draw the line itself and set dashing
     if (isDashed) {
-         painter->setPen(QPen(Qt::black, 1, Qt::DashLine, Qt::RoundCap, Qt::RoundJoin));
+         painter->setPen(QPen(edgeColor, 1, Qt::DashLine, Qt::RoundCap, Qt::RoundJoin));
     }else{
-         painter->setPen(QPen(Qt::black, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
+         painter->setPen(QPen(edgeColor, 1, Qt::SolidLine, Qt::RoundCap, Qt::RoundJoin));
     }
     painter->drawLine(line);
 

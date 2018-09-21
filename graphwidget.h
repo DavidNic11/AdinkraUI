@@ -13,6 +13,9 @@ class GraphWidget : public QGraphicsView
 public:
     GraphWidget(QWidget *parent = 0);
 
+    int getColorIndex(int node1, int node2);
+    int dimension;
+
 public slots:
     void shuffle();
     void zoomIn();

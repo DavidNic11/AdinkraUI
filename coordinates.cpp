@@ -1,7 +1,7 @@
 #include "coordinates.h"
 #include<QtDebug>
 
-Coordinates::Coordinates(int dim, QVector<double> *startingCoord) :  projectedX(0), projectedY(0), dimension(dim), d(100), s(100), indexOfTwoD(0)
+Coordinates::Coordinates(int dim, QVector<double> *startingCoord) :  projectedX(0), projectedY(0), dimension(dim), d(200), s(50), indexOfTwoD(0)
 {
     allCoordinates = new QVector<CoordinateNode*>();
     CoordinateNode *node = new CoordinateNode(-1,startingCoord, dimension);

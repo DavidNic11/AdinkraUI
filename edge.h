@@ -7,7 +7,9 @@ class Node;
 
 class Edge : public QGraphicsItem {
 public:
-    Edge(Node *sourceNode, Node *destNode, bool isDashed);
+    QColor edgeColor;
+
+    Edge(Node *sourceNode, Node *destNode, bool isDashed, QColor edgeColor);
 
     Node *sourceNode() const;
     Node *destNode() const;

@@ -5,7 +5,7 @@
 
 #include <math.h>
 #include <bitset>
-
+#include <iostream>
 #include <QKeyEvent>
 #include <QRandomGenerator>
 #include <QDebug>
@@ -47,8 +47,21 @@ GraphWidget::GraphWidget(QWidget *parent)
 //    nodeVector.append(node7);
 //    nodeVector.append(node8);
 
-    int dimension = 3;
+    dimension = 4;
     int numNodes = (1 << dimension);
+
+    QVector<QColor> colors;
+       double nextHue = 0.2f;
+       for(int i = 0; i < dimension; i++) {
+           QColor nextColor = QColor(0,0,0);
+           nextColor.toHsl();
+           nextHue += .6135;
+           if (nextHue>1) {
+               nextHue-=1;
+           }
+           nextColor.setHslF(nextHue,.5f,.4f);
+           colors.append(nextColor);
+       }
 
     qDebug() << numNodes;
 
@@ -62,9 +75,11 @@ GraphWidget::GraphWidget(QWidget *parent)
 
     for(int i = 0; i < numNodes; i++){
         for(int j = i + 1; j < numNodes ; j++){
-            std::bitset<32> result (nodeVector[i]->getNodeNumber() ^ nodeVector[j]->getNodeNumber());
+            std::bitset<sizeof(int)> result (nodeVector[i]->getNodeNumber() ^ nodeVector[j]->getNodeNumber());
+            //std::cout << result<< endl;
             if(result.count() == 1){
-                scene->addItem(new Edge(nodeVector[i], nodeVector[j], false));
+                scene->addItem(new Edge(nodeVector[i], nodeVector[j], false, colors[getColorIndex(i,j)]));
+
             }
         }
 
@@ -314,10 +329,20 @@ void GraphWidget::doStep(){
 QVector<double>* GraphWidget::createCoordinates(int dim, int nodeNumber){
     QVector<double> *coordinates = new QVector<double>();
     for(int i = 0; i < dim; i++){
-        coordinates->append(nodeNumber & 1 ? 1000 : -1000);
+        coordinates->append(nodeNumber & 1 ? 100 : -100);
         nodeNumber = (nodeNumber >> 1);
     }
 
     //qDebug() << *coordinates;
     return coordinates;
+}
+
+int GraphWidget::getColorIndex(int node1, int node2){
+    int i = 0 ;
+    int sum = node1 ^ node2;
+    while(sum != 0){
+        i++;
+        sum = sum >> 1;
+    }
+    return i-1;
 }
