@@ -301,14 +301,14 @@ void GraphWidget::rotZChanged(double newZ)
 
 void GraphWidget::doStep(){
     //rotation = rotation % 3600 + 1;
-    for(int i = 0 ; i < 8 ; i++){
-        nodeVector[i]->actualCoord->rotateX(M_PI * rotX/180.0 );
-        nodeVector[i]->actualCoord->rotateY(M_PI * rotY/180.0 );
-        nodeVector[i]->actualCoord->rotateZ(M_PI * rotZ/180.0 );
-        nodeVector[i]->projectPoint();
-        nodeVector[i]->setPos(nodeVector[i]->screenCoord->x, nodeVector[i]->screenCoord->y);
-    }
-    invalidateScene();
+//    for(int i = 0 ; i < 8 ; i++){
+//        nodeVector[i]->actualCoord->rotateX(M_PI * rotX/180.0 );
+//        nodeVector[i]->actualCoord->rotateY(M_PI * rotY/180.0 );
+//        nodeVector[i]->actualCoord->rotateZ(M_PI * rotZ/180.0 );
+//        nodeVector[i]->projectPoint();
+//        nodeVector[i]->setPos(nodeVector[i]->screenCoord->x, nodeVector[i]->screenCoord->y);
+//    }
+//    invalidateScene();
 }
 
 QVector<double>* GraphWidget::createCoordinates(int dim, int nodeNumber){

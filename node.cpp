@@ -16,7 +16,7 @@ int Node::getNodeNumber()
 }
 
 Node::Node(GraphWidget *graphWidget, bool isBoson, int number)
-    : graph(graphWidget), actualCoord(nullptr), screenCoord(new ScreenCoordinate(0,0)), coordinates(nullptr), nodeNumber(number)
+    : graph(graphWidget), coordinates(nullptr), nodeNumber(number)
 {
     this->isBoson = isBoson;
 
@@ -100,86 +100,80 @@ void Node::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 
 void Node::projectPoint(){
 
-    double xPrime = double(actualCoord->x * actualCoord->d) / double(actualCoord->z + actualCoord->s + actualCoord->d);
-    double yPrime = double(actualCoord->y * actualCoord->d) / double(actualCoord->z + actualCoord->s + actualCoord->d);
 
-    screenCoord->x = xPrime;
-    screenCoord->y = yPrime;
 }
-void Node::setACoord(ActualCoordinate *a){
-    actualCoord = a;
-}
+
 
 
 // Coordinate Stuff (Probably should move this to a new file)
-void ActualCoordinate::rotateX(double theta){
-    double mult [3][1] = {{0},{0},{0}};
+//void ActualCoordinate::rotateX(double theta){
+//    double mult [3][1] = {{0},{0},{0}};
 
-    double rotationMatrix[3][3] = {{cos(theta), -1*sin(theta), 0},
-                                    {sin(theta), cos(theta), 0},
-                                    {0, 0, 1}};
+//    double rotationMatrix[3][3] = {{cos(theta), -1*sin(theta), 0},
+//                                    {sin(theta), cos(theta), 0},
+//                                    {0, 0, 1}};
 
-    double xyzVector [3][1] = {{x},
-                            {y},
-                            {z}};
+//    double xyzVector [3][1] = {{x},
+//                            {y},
+//                            {z}};
 
-    for(int i = 0; i < 3; i++){
-        for(int j = 0; j < 1; j++){
-            for(int k = 0; k < 3; k++){
-                mult[i][j] += rotationMatrix[i][k] * xyzVector[k][j];
-            }
-        }
-    }
+//    for(int i = 0; i < 3; i++){
+//        for(int j = 0; j < 1; j++){
+//            for(int k = 0; k < 3; k++){
+//                mult[i][j] += rotationMatrix[i][k] * xyzVector[k][j];
+//            }
+//        }
+//    }
 
-    x = mult[0][0];
-    y = mult[1][0];
-    z = mult[2][0];
-}
+//    x = mult[0][0];
+//    y = mult[1][0];
+//    z = mult[2][0];
+//}
 
-void ActualCoordinate::rotateY(double theta){
-    double mult [3][1] = {{0},{0},{0}};
+//void ActualCoordinate::rotateY(double theta){
+//    double mult [3][1] = {{0},{0},{0}};
 
-    double rotationMatrix[3][3] = {{cos(theta), 0, sin(theta)},
-                                    {0, 1, 0},
-                                    {-1*sin(theta), 0, cos(theta)}};
+//    double rotationMatrix[3][3] = {{cos(theta), 0, sin(theta)},
+//                                    {0, 1, 0},
+//                                    {-1*sin(theta), 0, cos(theta)}};
 
-    double xyzVector [3][1] = {{x},
-                            {y},
-                            {z}};
+//    double xyzVector [3][1] = {{x},
+//                            {y},
+//                            {z}};
 
-    for(int i = 0; i < 3; i++){
-        for(int j = 0; j < 1; j++){
-            for(int k = 0; k < 3; k++){
-                mult[i][j] += rotationMatrix[i][k] * xyzVector[k][j];
-            }
-        }
-    }
+//    for(int i = 0; i < 3; i++){
+//        for(int j = 0; j < 1; j++){
+//            for(int k = 0; k < 3; k++){
+//                mult[i][j] += rotationMatrix[i][k] * xyzVector[k][j];
+//            }
+//        }
+//    }
 
-    x = mult[0][0];
-    y = mult[1][0];
-    z = mult[2][0];
-}
+//    x = mult[0][0];
+//    y = mult[1][0];
+//    z = mult[2][0];
+//}
 
-void ActualCoordinate::rotateZ(double theta){
-    double mult [3][1] = {{0},{0},{0}};
+//void ActualCoordinate::rotateZ(double theta){
+//    double mult [3][1] = {{0},{0},{0}};
 
-    double rotationMatrix[3][3] = {{1, 0, 0},
-                                    {0, cos(theta), -1*sin(theta)},
-                                    {0, sin(theta), cos(theta)}};
+//    double rotationMatrix[3][3] = {{1, 0, 0},
+//                                    {0, cos(theta), -1*sin(theta)},
+//                                    {0, sin(theta), cos(theta)}};
 
-    double xyzVector [3][1] = {{x},
-                            {y},
-                            {z}};
+//    double xyzVector [3][1] = {{x},
+//                            {y},
+//                            {z}};
 
-    for(int i = 0; i < 3; i++){
-        for(int j = 0; j < 1; j++){
-            for(int k = 0; k < 3; k++){
-                mult[i][j] += rotationMatrix[i][k] * xyzVector[k][j];
-            }
-        }
-    }
+//    for(int i = 0; i < 3; i++){
+//        for(int j = 0; j < 1; j++){
+//            for(int k = 0; k < 3; k++){
+//                mult[i][j] += rotationMatrix[i][k] * xyzVector[k][j];
+//            }
+//        }
+//    }
 
-    x = mult[0][0];
-    y = mult[1][0];
-    z = mult[2][0];
-}
+//    x = mult[0][0];
+//    y = mult[1][0];
+//    z = mult[2][0];
+//}
