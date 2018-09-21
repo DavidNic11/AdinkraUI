@@ -47,7 +47,7 @@ GraphWidget::GraphWidget(QWidget *parent)
 //    nodeVector.append(node7);
 //    nodeVector.append(node8);
 
-    dimension = 5;
+    dimension = 4;
     int numNodes = (1 << dimension);
 
     QVector<QColor> colors;
@@ -289,7 +289,7 @@ void GraphWidget::zoomOut()
 }
 
 void GraphWidget::startAnimation(){
-    timer->setInterval(20);
+    timer->setInterval(40);
     timer->setSingleShot(false);
     timer->start();
 }
@@ -317,12 +317,13 @@ void GraphWidget::rotZChanged(double newZ)
 void GraphWidget::doStep(){
     for(int i = 0; i < (1 << dimension); i++){
         //qDebug() << "Here";
-        //nodeVector[i]->coordinates->rotate(0,1,M_PI/200);
-        //nodeVector[i]->coordinates->rotate(0,2,M_PI/2000);
+        //nodeVector[i]->coordinates->rotate(0,1,M_PI* 1/200);
+        nodeVector[i]->coordinates->rotate(0,2,M_PI/200);
         //nodeVector[i]->coordinates->rotate(0,3,M_PI/200);
         //nodeVector[i]->coordinates->rotate(1,2,M_PI/200);
         //nodeVector[i]->coordinates->rotate(1,3,M_PI/200);
-       // nodeVector[i]->coordinates->rotate(2,3,M_PI/200);
+
+        nodeVector[i]->coordinates->rotate(2,3,M_PI/200);
 
 //        qDebug() << nodeVector[i]->coordinates->projectedX;
 //        qDebug() << nodeVector[i]->coordinates->projectedY;

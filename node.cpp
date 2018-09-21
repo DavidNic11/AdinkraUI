@@ -46,7 +46,7 @@ QRectF Node::boundingRect() const
 QPainterPath Node::shape() const
 {
     QPainterPath path;
-    path.addEllipse(-10, -10, 20, 20);
+    path.addEllipse(-5, -5, 10, 10);
     return path;
 }
 
@@ -69,7 +69,7 @@ void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
     painter->setBrush(color);
 
     painter->setPen(QPen(penColor, 0));
-    painter->drawEllipse(-10, -10, 20, 20);
+   painter->drawEllipse(-5, -5, 10, 10);
 }
 
 QVariant Node::itemChange(GraphicsItemChange change, const QVariant &value)

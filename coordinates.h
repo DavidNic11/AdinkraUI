@@ -28,6 +28,10 @@ private:
     int d;
     int s;
     int indexOfTwoD;
+
+    QVector<QVector<double>> matrix;
+    QVector<QVector<double>>coordinateMatrix;
+
     QVector<double> coordinates;
 };
 
