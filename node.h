@@ -39,6 +39,8 @@ public:
 
     Coordinates *coordinates;
 
+    int getNodeNumber();
+
     Node(GraphWidget *graphWidget, bool isBoson, int number);
 
     void addEdge(Edge *edge);

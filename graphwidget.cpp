@@ -4,6 +4,7 @@
 #include "coordinates.h"
 
 #include <math.h>
+#include <bitset>
 
 #include <QKeyEvent>
 #include <QRandomGenerator>
@@ -46,26 +47,29 @@ GraphWidget::GraphWidget(QWidget *parent)
 //    nodeVector.append(node7);
 //    nodeVector.append(node8);
 
-    int dimension = 4;
+    int dimension = 3;
     int numNodes = (1 << dimension);
 
     qDebug() << numNodes;
 
     for(int i = 0; i < numNodes; i++){
-        qDebug() << i;
-        nodeVector.append(new Node(this, true, i));
+        nodeVector.append(new Node(this, std::bitset<sizeof(int)>(i).count() % 2, i));
         QVector<double> *tempVector = createCoordinates(dimension, i);
-//        qDebug() << tempVector[0];
-//        qDebug() << tempVector[1];
-//        qDebug() << tempVector[2];
-//        qDebug() << tempVector[3];
-
         nodeVector[i]->coordinates = new Coordinates(dimension, tempVector);
-        qDebug() << "here";
         scene->addItem(nodeVector[i]);
         nodeVector[i]->setPos(nodeVector[i]->coordinates->projectedX, nodeVector[i]->coordinates->projectedY);
     }
 
+    for(int i = 0; i < numNodes; i++){
+        for(int j = i + 1; j < numNodes ; j++){
+            std::bitset<32> result (nodeVector[i]->getNodeNumber() ^ nodeVector[j]->getNodeNumber());
+            if(result.count() == 1){
+                scene->addItem(new Edge(nodeVector[i], nodeVector[j], false));
+            }
+        }
+
+
+    }
 //    for(int i = 0; i < 8; i++){
 //        bool isB = (i&3) % 3 == 0;
 //        nodeVector.append(new Node(this, (i >= 4 ? !isB: isB)));
@@ -314,5 +318,6 @@ QVector<double>* GraphWidget::createCoordinates(int dim, int nodeNumber){
         nodeNumber = (nodeNumber >> 1);
     }
 
+    //qDebug() << *coordinates;
     return coordinates;
 }

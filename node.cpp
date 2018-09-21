@@ -10,6 +10,11 @@
 #include <QDebug>
 #include <math.h>
 
+int Node::getNodeNumber()
+{
+    return nodeNumber;
+}
+
 Node::Node(GraphWidget *graphWidget, bool isBoson, int number)
     : graph(graphWidget), actualCoord(nullptr), screenCoord(new ScreenCoordinate(0,0)), coordinates(nullptr), nodeNumber(number)
 {
@@ -49,7 +54,7 @@ void Node::paint(QPainter *painter, const QStyleOptionGraphicsItem *option, QWid
 {
     painter->setPen(Qt::NoPen);
     painter->setBrush(Qt::darkGray);
-    painter->drawEllipse(-7, -7, 20, 20);
+    //painter->drawEllipse(-7, -7, 20, 20);
 
     int r = 255;
     int g = 84;
@@ -94,16 +99,9 @@ void Node::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 }
 
 void Node::projectPoint(){
-//    qInfo() <<"X = " <<actualCoord->x;
-//     qInfo() <<"Y = " <<actualCoord->y;
-//      qInfo() <<"Z = " <<actualCoord->z;
-//       qInfo() <<"S = " <<actualCoord->s;
-//        qInfo() <<"D = " <<actualCoord->d;
 
     double xPrime = double(actualCoord->x * actualCoord->d) / double(actualCoord->z + actualCoord->s + actualCoord->d);
     double yPrime = double(actualCoord->y * actualCoord->d) / double(actualCoord->z + actualCoord->s + actualCoord->d);
-     //qInfo()<<"XPRIME = " << xPrime;
-      //qInfo()<<"YPRIME = " << yPrime;
 
     screenCoord->x = xPrime;
     screenCoord->y = yPrime;
