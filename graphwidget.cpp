@@ -17,7 +17,7 @@ GraphWidget::GraphWidget(QWidget *parent)
 {
     QGraphicsScene *scene = new QGraphicsScene(this);
     scene->setItemIndexMethod(QGraphicsScene::NoIndex);
-    //scene->setSceneRect(-200, -200, 400, 400);
+    scene->setSceneRect(-200, -200, 400, 400);
     setScene(scene);
     setCacheMode(CacheBackground);
     setViewportUpdateMode(BoundingRectViewportUpdate);
@@ -28,24 +28,6 @@ GraphWidget::GraphWidget(QWidget *parent)
     setWindowTitle(tr("Adinkra Nodes"));
 
     rotation = 0;
-//    Node *node1 = new Node(this, true);
-//    Node *node2 = new Node(this, false);
-//    Node *node3 = new Node(this, false);
-//    Node *node4 = new Node(this, true);
-
-//    Node *node5 = new Node(this, false);
-//    Node *node6 = new Node(this, true);
-//    Node *node7 = new Node(this, true);
-//    Node *node8 = new Node(this, false);
-
-//    nodeVector.append(node1);
-//    nodeVector.append(node2);
-//    nodeVector.append(node3);
-//    nodeVector.append(node4);
-//    nodeVector.append(node5);
-//    nodeVector.append(node6);
-//    nodeVector.append(node7);
-//    nodeVector.append(node8);
 
     dimension = 4;
     int numNodes = (1 << dimension);
@@ -78,130 +60,14 @@ GraphWidget::GraphWidget(QWidget *parent)
             std::bitset<sizeof(int)> result (nodeVector[i]->getNodeNumber() ^ nodeVector[j]->getNodeNumber());
             //std::cout << result<< endl;
             if(result.count() == 1){
-                scene->addItem(new Edge(nodeVector[i], nodeVector[j], false, colors[getColorIndex(i,j)]));
+                scene->addItem(new Edge(nodeVector[i], nodeVector[j], std::bitset<sizeof(int)> (i >> getDifferingPlace(i,j)).count()%2, colors[getDifferingPlace(i,j)]));
 
             }
         }
 
 
     }
-//    for(int i = 0; i < 8; i++){
-//        bool isB = (i&3) % 3 == 0;
-//        nodeVector.append(new Node(this, (i >= 4 ? !isB: isB)));
-//        nodeVector[i]->setACoord(new ActualCoordinate((i&1?-1:1)*100, (i&2?-1:1)*100,(i&4?-1:1)*-100));
-//        //nodeVector[i]->actualCoord->rotateZ(M_PI/6);
-//        scene->addItem(nodeVector[i]);
-//        nodeVector[i]->projectPoint();
-//        nodeVector[i]->setPos(nodeVector[i]->screenCoord->x, nodeVector[i]->screenCoord->y);
-//    }
-
-    // Screen Coordinate
-//    ActualCoordinate *a1 = new ActualCoordinate(100,100,-100);
-//    ActualCoordinate *a2 = new ActualCoordinate(-100,100,-100);
-//    ActualCoordinate *a3 = new ActualCoordinate(100,-100,-100);
-//    ActualCoordinate *a4 = new ActualCoordinate(-100,-100,-100);
-//    ActualCoordinate *a5 = new ActualCoordinate(100,100,100);
-//    ActualCoordinate *a6 = new ActualCoordinate(-100,100,100);
-//    ActualCoordinate *a7 = new ActualCoordinate(100,-100,100);
-//    ActualCoordinate *a8 = new ActualCoordinate(-100,-100,100);
-
-//    a1->rotateZ(M_PI/6);
-//    a2->rotateZ(M_PI/6);
-//    a3->rotateZ(M_PI/6);
-//    a4->rotateZ(M_PI/6);
-//    a5->rotateZ(M_PI/6);
-//    a6->rotateZ(M_PI/6);
-//    a7->rotateZ(M_PI/6);
-//    a8->rotateZ(M_PI/6);
-
-//    a1->rotateY(M_PI/6);
-//    a2->rotateY(M_PI/6);
-//    a3->rotateY(M_PI/6);
-//    a4->rotateY(M_PI/6);
-//    a5->rotateY(M_PI/6);
-//    a6->rotateY(M_PI/6);
-//    a7->rotateY(M_PI/6);
-//    a8->rotateY(M_PI/6);
-
-    // Give the people what they want
-//    node1->setACoord(a1);
-//    node2->setACoord(a2);
-//    node3->setACoord(a3);
-//    node4->setACoord(a4);
-//    node5->setACoord(a5);
-//    node6->setACoord(a6);
-//    node7->setACoord(a7);
-//    node8->setACoord(a8);
-    //Node *center = new Node(this, false);
-
-//    scene->addItem(node1);
-//    scene->addItem(node2);
-//    scene->addItem(node3);
-//    scene->addItem(node4);
-
-//    scene->addItem(node5);
-//    scene->addItem(node6);
-//    scene->addItem(node7);
-//    scene->addItem(node8);
-
-    //Front Face
-//    scene->addItem(new Edge(nodeVector[0], nodeVector[1], true));
-//    scene->addItem(new Edge(nodeVector[0], nodeVector[2], false));
-//    scene->addItem(new Edge(nodeVector[0], nodeVector[4], true));
-
-//    scene->addItem(new Edge(nodeVector[1], nodeVector[3], false));
-//    scene->addItem(new Edge(nodeVector[1], nodeVector[5], true));
-
-//    scene->addItem(new Edge(nodeVector[2], nodeVector[3], false));
-//    scene->addItem(new Edge(nodeVector[2], nodeVector[6], false));
-
-//    scene->addItem(new Edge(nodeVector[4], nodeVector[5], false));
-//    //Left Side
-//    scene->addItem(new Edge(nodeVector[6], nodeVector[4], false));
-//    scene->addItem(new Edge(nodeVector[6], nodeVector[7], true));
-
-//    //Back face
-
-//    scene->addItem(new Edge(nodeVector[7], nodeVector[5], false));
-
-
-    //Right Side
-    //scene->addItem(new Edge(nodeVector[3], nodeVector[7], false));
-
-//    node1->projectPoint();
-//    node2->projectPoint();
-//    node3->projectPoint();
-//    node4->projectPoint();
-//    node5->projectPoint();
-//    node6->projectPoint();
-//    node7->projectPoint();
-//    node8->projectPoint();
-
-//    node1->setPos(node1->screenCoord->x, node1->screenCoord->y);  //(-100 - 25, -100 + 25);
-//    node2->setPos(node2->screenCoord->x, node2->screenCoord->y);  //(-100 - 25, 100 + 25);
-//    node3->setPos(node3->screenCoord->x, node3->screenCoord->y);  //(100 - 25, 100 + 25);
-//    node4->setPos(node4->screenCoord->x, node4->screenCoord->y);  //(100 - 25, -100 + 25);
-
-//    node5->setPos(node5->screenCoord->x, node5->screenCoord->y);  //(-25 - 25, -175 + 25);
-//    node6->setPos(node6->screenCoord->x, node6->screenCoord->y);  //(175 - 25, -175 + 25);
-//    node7->setPos(node7->screenCoord->x, node7->screenCoord->y);  //(-25 - 25, 25 + 25);
-//    node8->setPos(node8->screenCoord->x, node8->screenCoord->y);  //(175 - 25, 25 + 25);
     connect(timer, &QTimer::timeout, this, &GraphWidget::doStep);
-    //startAnimation();
-
-    /*
-     * TODO:
-     *  Add a number system for nodes
-     *  Figure out how to center everything
-     *  Create from Scratch (automated)
-     *
-     * spin the cubef
-     *  three roatations
-     *  nodes xyz
-     *  screen xy
-     *
-     *  maybe add animation
-    */
 }
 
 void GraphWidget::keyPressEvent(QKeyEvent *event)
@@ -289,7 +155,7 @@ void GraphWidget::zoomOut()
 }
 
 void GraphWidget::startAnimation(){
-    timer->setInterval(40);
+    timer->setInterval(20);
     timer->setSingleShot(false);
     timer->start();
 }
@@ -316,28 +182,12 @@ void GraphWidget::rotZChanged(double newZ)
 
 void GraphWidget::doStep(){
     for(int i = 0; i < (1 << dimension); i++){
-        //qDebug() << "Here";
-        //nodeVector[i]->coordinates->rotate(0,1,M_PI* 1/200);
+        nodeVector[i]->coordinates->rotate(0,1,M_PI* 1/200);
         nodeVector[i]->coordinates->rotate(0,2,M_PI/200);
-        //nodeVector[i]->coordinates->rotate(0,3,M_PI/200);
-        //nodeVector[i]->coordinates->rotate(1,2,M_PI/200);
-        //nodeVector[i]->coordinates->rotate(1,3,M_PI/200);
-
         nodeVector[i]->coordinates->rotate(2,3,M_PI/200);
-
-//        qDebug() << nodeVector[i]->coordinates->projectedX;
-//        qDebug() << nodeVector[i]->coordinates->projectedY;
 
         nodeVector[i]->setPos(nodeVector[i]->coordinates->projectedX, nodeVector[i]->coordinates->projectedY);
     }
-//    for(int i = 0 ; i < 8 ; i++){
-//        nodeVector[i]->actualCoord->rotateX(M_PI * rotX/180.0 );
-//        nodeVector[i]->actualCoord->rotateY(M_PI * rotY/180.0 );
-//        nodeVector[i]->actualCoord->rotateZ(M_PI * rotZ/180.0 );
-//        nodeVector[i]->projectPoint();
-//        nodeVector[i]->setPos(nodeVector[i]->screenCoord->x, nodeVector[i]->screenCoord->y);
-//    }
-    invalidateScene();
 }
 
 QVector<double>* GraphWidget::createCoordinates(int dim, int nodeNumber){
@@ -347,11 +197,10 @@ QVector<double>* GraphWidget::createCoordinates(int dim, int nodeNumber){
         nodeNumber = (nodeNumber >> 1);
     }
 
-    //qDebug() << *coordinates;
     return coordinates;
 }
 
-int GraphWidget::getColorIndex(int node1, int node2){
+int GraphWidget::getDifferingPlace(int node1, int node2){
     int i = 0 ;
     int sum = node1 ^ node2;
     while(sum != 0){
