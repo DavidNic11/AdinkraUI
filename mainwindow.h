@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QPropertyAnimation>
+#include <QStandardItemModel>
 
 namespace Ui {
 class MainWindow;
@@ -26,6 +27,8 @@ private:
 
     QMenu *fileMenu;
     QAction *printAction;
+
+    QStandardItemModel *dimModel;
 
 public slots:
     void on_pbStart_clicked();
