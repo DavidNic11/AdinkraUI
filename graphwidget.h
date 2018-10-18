@@ -42,7 +42,12 @@ private:
     int rotation;
     double rotX, rotY, rotZ;
 
+    QVector<unsigned int> basis;
+
+    QVector<int>* createCode();
     QVector<double>* createCoordinates(int dim, int nodeNumber);
+    QVector<double>* createLevelCoordinates(bool isEven,int start, int step);
+    QVector<int>* createIndex();
 private slots:
     void doStep();
 };

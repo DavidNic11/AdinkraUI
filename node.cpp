@@ -2,7 +2,7 @@
 #include "node.h"
 #include "graphwidget.h"
 
-
+#include <bitset>
 #include <QGraphicsScene>
 #include <QGraphicsSceneMouseEvent>
 #include <QPainter>
@@ -15,10 +15,21 @@ int Node::getNodeNumber()
     return nodeNumber;
 }
 
+int Node::getNodeEdgeNumber()
+{
+    return edgingNodeNumber;
+}
+
+bool Node::getBoson()
+{
+    return isBoson;
+}
+
 Node::Node(GraphWidget *graphWidget, bool isBoson, int number)
     : graph(graphWidget), coordinates(nullptr), nodeNumber(number)
 {
     this->isBoson = isBoson;
+    this->edgingNodeNumber = 0;
 
     setFlag(ItemIsMovable);
     setFlag(ItemSendsGeometryChanges);
@@ -35,6 +46,20 @@ void Node::addEdge(Edge *edge)
 QList<Edge *> Node::edges() const
 {
     return edgeList;
+}
+
+void Node::setEdgeNumber(QVector<int> *indices)
+{
+    int number;
+    edgingNodeNumber = 0;
+    for(int i = 0; i < indices->size(); i++){
+        number = nodeNumber;
+        if(((number >> (*indices)[i]) & 1)){
+            edgingNodeNumber |= (1 << i);
+        }
+    }
+    qDebug() << nodeNumber;
+    qDebug() << edgingNodeNumber << endl;
 }
 
 QRectF Node::boundingRect() const
@@ -83,11 +108,22 @@ QVariant Node::itemChange(GraphicsItemChange change, const QVariant &value)
         break;
     };
 
+    QPointF newPoint = value.toPointF();
+
+    if (change == ItemPositionChange && scene()) {
+        double yValue = std::bitset<sizeof(int)>(nodeNumber).count() % 2 ? 200: -100;
+        if(newPoint.y() != yValue){
+            newPoint.setY(yValue);
+            return newPoint;
+        }
+    }
+
     return QGraphicsItem::itemChange(change, value);
 }
 
 void Node::mousePressEvent(QGraphicsSceneMouseEvent *event)
 {
+    oldPoint = pos();
     update();
     QGraphicsItem::mousePressEvent(event);
 }

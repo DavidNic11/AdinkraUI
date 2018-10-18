@@ -9,14 +9,14 @@ MainWindow::MainWindow(QWidget *parent) :
     ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
-    dimModel = new QStandardItemModel(this);
-    ui->rotateTable->setModel(dimModel);
+//    dimModel = new QStandardItemModel(this);
+//    ui->rotateTable->setModel(dimModel);
 
-    for(int i = 0; i < 5; i++){
-        for(int j = 0; j < 5; j++){
-            dimModel->appendRow(new QStandardItem("text"));
-        }
-    }
+//    for(int i = 0; i < 5; i++){
+//        for(int j = 0; j < 5; j++){
+//            dimModel->appendRow(new QStandardItem("text"));
+//        }
+//    }
 //    connect(ui->sbX, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), ui->widget, &GraphWidget::rotXChanged);
 //    connect(ui->sbY, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), ui->widget, &GraphWidget::rotYChanged);
 //    connect(ui->sbZ, static_cast<void (QSpinBox::*)(int)>(&QSpinBox::valueChanged), ui->widget, &GraphWidget::rotZChanged);

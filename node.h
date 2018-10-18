@@ -16,11 +16,17 @@ public:
     Coordinates *coordinates;
 
     int getNodeNumber();
+    int getNodeEdgeNumber();
+    bool getBoson();
+
+    QPointF oldPoint;
 
     Node(GraphWidget *graphWidget, bool isBoson, int number);
 
     void addEdge(Edge *edge);
     QList<Edge *> edges() const;
+
+    void setEdgeNumber(QVector<int>* indices);
 
     enum { Type = UserType + 1};
     int type() const override {return Type;}
@@ -45,6 +51,7 @@ private:
     GraphWidget *graph;
     bool isBoson;
     int nodeNumber;
+    int edgingNodeNumber;
 };
 
 
