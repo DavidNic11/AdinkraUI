@@ -26,7 +26,7 @@ public:
     void addEdge(Edge *edge);
     QList<Edge *> edges() const;
 
-    void setEdgeNumber(QVector<int>* indices);
+    void setEdgeNumber(int number);
 
     enum { Type = UserType + 1};
     int type() const override {return Type;}

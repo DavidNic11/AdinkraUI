@@ -29,11 +29,38 @@ GraphWidget::GraphWidget(QWidget *parent)
     setWindowTitle(tr("Adinkra Nodes"));
 
     rotation = 0;
-    basis.append(105);
-    basis.append(202);
-    basis.append(172);
-    basis.append(240);
+//    basis.append(105);
+//    basis.append(202);
+//    basis.append(172);
+//    basis.append(240);
+    length = 8;
 
+//225 114 180 216
+//    basis.append(225);
+//    basis.append(114);
+//    basis.append(180);
+//    basis.append(216);
+
+    //209 114 228 184
+
+//    basis.append(209);
+//    basis.append(114);
+//    basis.append(228);
+//    basis.append(184);
+
+//53 86 120
+//        basis.append(53);
+//        basis.append(83);
+//        basis.append(120);
+
+    basis.append(15);
+    basis.append(240);
+    //23 232
+//    basis.append(23);
+//    basis.append(232);
+
+//    basis.append(27);
+//    basis.append(60);
 
 
     dimension = basis.size();
@@ -41,7 +68,7 @@ GraphWidget::GraphWidget(QWidget *parent)
     int numNodes = (1 << dimension);
 
      QVector<int>* indices = createIndex();
-
+qDebug() << *indices;
     QVector<QColor> colors;
        double nextHue = 0.2f;
        for(int i = 0; i < basis.size(); i++) {
@@ -63,7 +90,8 @@ GraphWidget::GraphWidget(QWidget *parent)
        int oddStep = 0;
        int step;
 
-//       QVector<int>* code = createCode();
+       QVector<int>* code = createCode();
+       qDebug() << *code << endl;
 //       for(int i = 0; i < numNodes; i++){
 //           step = (*code)[i] %2 ? evenStep++ : oddStep++;
 //           //qDebug() << (*code)[i] << endl;
@@ -97,24 +125,37 @@ GraphWidget::GraphWidget(QWidget *parent)
 
        //For Cubes
     for(int i = 0; i < numNodes; i++){
-         step = i %2 ? evenStep++ : oddStep++;
-         nodeVector.append(new Node(this, std::bitset<sizeof(int)>(i).count() % 2, i));
+         int number = createNumber((*code)[i],indices);
+         qDebug() << number;
+         step = number%2 ? evenStep++ : oddStep++;
+         nodeVector.append(new Node(this, std::bitset<sizeof(int)>(number).count() % 2, (*code)[i]));
+         nodeVector[i]->setEdgeNumber(number);
         //nodeVector.append(new Node(this, std::bitset<sizeof(int)>(i).count() % 2, i));
         //QVector<double> *tempVector = createCoordinates(dimension, i);
 //        nodeVector[i]->coordinates = new Coordinates(dimension, tempVector);
 //        scene->addItem(nodeVector[i]);
 //        nodeVector[i]->setPos(nodeVector[i]->coordinates->projectedX, nodeVector[i]->coordinates->projectedY);
-        QVector<double> *tempVector = createLevelCoordinates(std::bitset<sizeof(int)>(i).count() % 2, start, dx*step);
+        QVector<double> *tempVector = createLevelCoordinates(std::bitset<sizeof(int)>(number).count() % 2, start, dx*step);
+        qDebug() << *tempVector;
         scene->addItem(nodeVector[i]);
         nodeVector[i]->setPos((*tempVector)[0],(*tempVector)[1]);
     }
 
     for(int i = 0; i < numNodes; i++){
+
+    }
+    for(int i = 0; i < numNodes; i++){
         for(int j = i + 1; j < numNodes ; j++){
-            std::bitset<sizeof(int)> result (nodeVector[i]->getNodeNumber() ^ nodeVector[j]->getNodeNumber());
+            std::bitset<sizeof(int)> result (nodeVector[i]->getNodeEdgeNumber() ^ nodeVector[j]->getNodeEdgeNumber());
             //std::cout << result<< endl;
             if(result.count() == 1){
-                scene->addItem(new Edge(nodeVector[i], nodeVector[j], std::bitset<sizeof(int)> (i >> getDifferingPlace(i,j)).count()%2, colors[getDifferingPlace(i,j)]));
+                int iNum = nodeVector[i]->getNodeEdgeNumber();
+                int jNum = nodeVector[j]->getNodeEdgeNumber();
+                qDebug() << "I:" << iNum << "J:" << jNum;
+                qDebug() <<"Differing Value: "<< getDifferingPlace(iNum,jNum);
+                qDebug() << "SHIFTED VALUE:" << (std::bitset<sizeof(int)> (iNum >> getDifferingPlace(iNum,jNum)).count()%2) << endl;
+
+                scene->addItem(new Edge(nodeVector[i], nodeVector[j], std::bitset<sizeof(int)> (iNum >> getDifferingPlace(iNum,jNum)).count()%2, colors[getDifferingPlace(iNum,jNum)-1]));
 
             }
         }
@@ -269,7 +310,6 @@ QVector<int> *GraphWidget::createIndex()
      QVector<unsigned int> tempBasis = basis;
      QVector<int>* index = new QVector<int>();
      bool isLine;
-     int length = 8;
      int shiftCounter = 0;
      for(int i = 0; i < tempBasis.size(); i++){
             bool foundOne = false;
@@ -277,16 +317,29 @@ QVector<int> *GraphWidget::createIndex()
                 if (tempBasis[i] & 1){
                     foundOne = true;
                     index->append(shiftCounter);
-                }else{
+                }
                     //shift
                     for(int j = 0; j < tempBasis.size(); j++){
                         tempBasis[j] = tempBasis[j] >> 1;
                     }
                     shiftCounter++;
-                }
+
             }
      }
      return index;
+}
+
+int GraphWidget::createNumber(int nodeNumber, QVector<int>* indices)
+{
+    int number;
+    int edgingNodeNumber = 0;
+    for(int i = 0; i < indices->size(); i++){
+        number = nodeNumber;
+        if(((number >> (*indices)[i]) & 1)){
+            edgingNodeNumber |= (1 << i);
+        }
+    }
+    return edgingNodeNumber;
 }
 
 int GraphWidget::getDifferingPlace(int node1, int node2){
@@ -296,7 +349,7 @@ int GraphWidget::getDifferingPlace(int node1, int node2){
         i++;
         sum = sum >> 1;
     }
-    return i-1;
+    return i;//-1;
 }
 
 QVector<int>* GraphWidget::createCode(){

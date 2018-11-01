@@ -41,13 +41,15 @@ private:
     QTimer *timer;
     int rotation;
     double rotX, rotY, rotZ;
-
+    int length;
     QVector<unsigned int> basis;
 
     QVector<int>* createCode();
     QVector<double>* createCoordinates(int dim, int nodeNumber);
     QVector<double>* createLevelCoordinates(bool isEven,int start, int step);
     QVector<int>* createIndex();
+
+    int createNumber(int nodeNumber, QVector<int>* indices);
 private slots:
     void doStep();
 };

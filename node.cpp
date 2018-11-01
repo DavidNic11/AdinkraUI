@@ -48,18 +48,9 @@ QList<Edge *> Node::edges() const
     return edgeList;
 }
 
-void Node::setEdgeNumber(QVector<int> *indices)
+void Node::setEdgeNumber(int number)
 {
-    int number;
-    edgingNodeNumber = 0;
-    for(int i = 0; i < indices->size(); i++){
-        number = nodeNumber;
-        if(((number >> (*indices)[i]) & 1)){
-            edgingNodeNumber |= (1 << i);
-        }
-    }
-    qDebug() << nodeNumber;
-    qDebug() << edgingNodeNumber << endl;
+    edgingNodeNumber = number;
 }
 
 QRectF Node::boundingRect() const
@@ -111,7 +102,7 @@ QVariant Node::itemChange(GraphicsItemChange change, const QVariant &value)
     QPointF newPoint = value.toPointF();
 
     if (change == ItemPositionChange && scene()) {
-        double yValue = std::bitset<sizeof(int)>(nodeNumber).count() % 2 ? 200: -100;
+        double yValue = std::bitset<sizeof(int)>(edgingNodeNumber).count() % 2 ? 200: -100;
         if(newPoint.y() != yValue){
             newPoint.setY(yValue);
             return newPoint;
