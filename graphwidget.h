@@ -13,6 +13,8 @@ class GraphWidget : public QGraphicsView
 public:
     GraphWidget(QWidget *parent = 0);
 
+    void bfs();
+
     int getDifferingPlace(int node1, int node2);
     int dimension;
 

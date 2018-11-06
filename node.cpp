@@ -99,16 +99,17 @@ QVariant Node::itemChange(GraphicsItemChange change, const QVariant &value)
         break;
     };
 
-    QPointF newPoint = value.toPointF();
+//    QPointF newPoint = value.toPointF();
 
-    if (change == ItemPositionChange && scene()) {
-        double yValue = std::bitset<sizeof(int)>(edgingNodeNumber).count() % 2 ? 200: -100;
-        if(newPoint.y() != yValue){
-            newPoint.setY(yValue);
-            return newPoint;
-        }
-    }
-
+//    if (change == ItemPositionChange && scene()) {
+//        double yValue = nodeNumber % 2 ? 200: -100;
+//        if(newPoint.y() != yValue){
+//            newPoint.setY(yValue);
+//            return newPoint;
+//        }
+//    }
+    //qDebug() << nodeNumber;
+    //qDebug() << std::bitset<sizeof(int)> (nodeNumber).count();
     return QGraphicsItem::itemChange(change, value);
 }
 
@@ -128,6 +129,11 @@ void Node::mouseReleaseEvent(QGraphicsSceneMouseEvent *event)
 void Node::projectPoint(){
 
 
+}
+
+QList<Edge *> Node::getEdgeList()
+{
+    return edgeList;
 }
 
 

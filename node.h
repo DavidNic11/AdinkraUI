@@ -15,6 +15,9 @@ public:
 
     Coordinates *coordinates;
 
+    bool visited = false;
+    int height = 0;
+
     int getNodeNumber();
     int getNodeEdgeNumber();
     bool getBoson();
@@ -38,7 +41,7 @@ public:
 
     // Projection
     void projectPoint();
-
+    QList<Edge*> getEdgeList();
 protected:
     QVariant itemChange(GraphicsItemChange change, const QVariant &value) override;
     // Mouse Events

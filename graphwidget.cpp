@@ -10,6 +10,9 @@
 #include <QKeyEvent>
 #include <QRandomGenerator>
 #include <QDebug>
+#include <QStack>
+#include <QList>
+#include <QQueue>
 
 # define M_PI           3.14159265358979323846  /* pi */
 
@@ -29,10 +32,10 @@ GraphWidget::GraphWidget(QWidget *parent)
     setWindowTitle(tr("Adinkra Nodes"));
 
     rotation = 0;
-//    basis.append(105);
-//    basis.append(202);
-//    basis.append(172);
-//    basis.append(240);
+    basis.append(105);
+    basis.append(202);
+    basis.append(172);
+    basis.append(240);
     length = 8;
 
 //225 114 180 216
@@ -53,8 +56,8 @@ GraphWidget::GraphWidget(QWidget *parent)
 //        basis.append(83);
 //        basis.append(120);
 
-    basis.append(15);
-    basis.append(240);
+//    basis.append(15);
+//    basis.append(240);
     //23 232
 //    basis.append(23);
 //    basis.append(232);
@@ -65,33 +68,138 @@ GraphWidget::GraphWidget(QWidget *parent)
 
     dimension = basis.size();
     //dimension = 4;
-    int numNodes = (1 << dimension);
-
-     QVector<int>* indices = createIndex();
-qDebug() << *indices;
+    int numNodes = (1 << (length - dimension));
+    int totalCodeWords = 1 << length;
     QVector<QColor> colors;
        double nextHue = 0.2f;
-       for(int i = 0; i < basis.size(); i++) {
-           QColor nextColor = QColor(0,0,0);
-           nextColor.toHsl();
-           nextHue += .6135;
-           if (nextHue>1) {
-               nextHue-=1;
-           }
-           nextColor.setHslF(nextHue,.5f,.4f);
-           colors.append(nextColor);
-       }
+//       for(int i = 0; i < length; i++) {
+//           QColor nextColor = QColor(0,0,0);
+//           nextColor.toHsl();
+//           nextHue += .6135;
+//           if (nextHue>1) {
+//               nextHue-=1;
+//           }
+//           nextColor.setHslF(nextHue,.5f,.4f);
+//           colors.append(nextColor);
+//       }
+       colors.append(QColor(255,96,96));
+       colors.append(QColor(211,85,255));
+       colors.append(QColor(87,98,255));
+       colors.append(QColor(255,157,83));
+       colors.append(QColor(255,217,83));
+       colors.append(QColor(75,255,170));
+       colors.append(QColor(75,194,255));
+       colors.append(QColor(0,0,0));
+
        int start = -180;
        int end = 600;
        int numNodesPerLevel = numNodes/2;
        int dx = (abs(start) + abs(end)) / numNodesPerLevel;
-      // qDebug() << dx;
+
        int evenStep = 0;
        int oddStep = 0;
        int step;
 
-       QVector<int>* code = createCode();
-       qDebug() << *code << endl;
+       //       QVector<int>* code = createCode();
+       //       qDebug() << *code << endl;
+       //       for(int i = 0; i < numNodes; i++){
+       //
+       //       }
+
+
+    QVector<int> codeWordsToUse = QVector<int>();
+    QVector<int> indices = {0,1,2,4};
+
+    for(int codeword = 0; codeword < totalCodeWords; codeword++){
+         int word = codeword;
+         for(int bit = 0; bit < length; bit++){
+             if(indices.contains(bit)){
+                 if((word>>bit)&1){
+                     int baseWord = (bit == 0 ? 105 : (bit == 1 ? 202: (bit == 2 ? 172 : 240))); // ew
+                     word = word ^ baseWord;
+                 }
+             }
+         }
+
+         if(!codeWordsToUse.contains(word)){
+             codeWordsToUse.append(word);
+         }
+    }
+
+    for(int word = 0; word < numNodes; word++){
+        bool isBoson = std::bitset<64> (codeWordsToUse[word]).count()%2;
+        //qDebug() << (codeWordsToUse[word]) << ", numOnes = " << std::bitset<sizeof(int)>(codeWordsToUse[word]).count();
+        step = isBoson ? oddStep++ : evenStep++;
+        QVector<double> *coordinates = createLevelCoordinates(isBoson,start,dx*step);
+        Node* node = new Node(this, isBoson, codeWordsToUse[word]);
+        nodeVector.append(node);
+        scene->addItem(node);
+        //qDebug()<< (*coordinates);
+        node->setPos((*coordinates)[0],(*coordinates)[1]);
+        //node->setPos(100,100);
+    }
+
+    for(int node = 0; node < numNodes; node++){
+        Node* first = nodeVector[node];
+        for(int color = 0; color < colors.count(); color++){
+            int firstNodeNumber = nodeVector[node]->getNodeNumber();
+            int numberToFind = firstNodeNumber^(1<<color);
+            for(int bit = 0; bit < length; bit++){
+                if(indices.contains(bit)){
+                    if((numberToFind>>bit)&1){
+                        int baseWord = (bit == 0 ? 105 : (bit == 1 ? 202: (bit == 2 ? 172 : 240))); // ew
+                        numberToFind = numberToFind ^ baseWord;
+                    }
+                }
+            }
+            for(int secondNode = node+1; secondNode < numNodes; secondNode++){
+                Node* second = nodeVector[secondNode];
+                if(second->getNodeNumber() == numberToFind){
+                    //qDebug() << first->getNodeNumber()<<"," << second->getNodeNumber();
+                    Edge* edge = new Edge(first,second,false,colors[color]);
+                    scene->addItem(edge);
+                    break;
+                }
+            }
+        }
+
+
+    }
+
+
+//    for(int i =0 ; i < numNodes; i++){
+//        if(nodeVector[i]->getBoson()){
+//            for(int color= 0; color < colors.count(); color++){
+//                int firstNodeNumber = nodeVector[i]->getNodeNumber();
+//                int numToFind = (firstNodeNumber^(1<<color));
+//                Node *secondNode;
+//                for(int k = 0; k < nodeVector.count(); k++){
+//                    if(nodeVector[k]->getNodeNumber() == numToFind){
+//                        secondNode = nodeVector[k];
+//                        break;
+//                    }
+//                }
+
+//                scene->addItem(new Edge(nodeVector[i],secondNode, false, colors[color]));
+//            }
+
+//        }
+//    }
+
+
+     //QVector<int>* indices = createIndex();
+
+//      int start = -180;
+//       int end = 600;
+//       int numNodesPerLevel = numNodes/2;
+//       int dx = (abs(start) + abs(end)) / numNodesPerLevel;
+
+//       int evenStep = 0;
+//       int oddStep = 0;
+//       int step;
+
+//       QVector<int>* code = createCode();
+//       qDebug() << *code << endl;
 //       for(int i = 0; i < numNodes; i++){
 //           step = (*code)[i] %2 ? evenStep++ : oddStep++;
 //           //qDebug() << (*code)[i] << endl;
@@ -123,46 +231,136 @@ qDebug() << *indices;
 
     //qDebug() << numNodes;
 
-       //For Cubes
-    for(int i = 0; i < numNodes; i++){
-         int number = createNumber((*code)[i],indices);
-         qDebug() << number;
-         step = number%2 ? evenStep++ : oddStep++;
-         nodeVector.append(new Node(this, std::bitset<sizeof(int)>(number).count() % 2, (*code)[i]));
-         nodeVector[i]->setEdgeNumber(number);
-        //nodeVector.append(new Node(this, std::bitset<sizeof(int)>(i).count() % 2, i));
-        //QVector<double> *tempVector = createCoordinates(dimension, i);
-//        nodeVector[i]->coordinates = new Coordinates(dimension, tempVector);
+//       //For Cubes
+//    for(int i = 0; i < numNodes; i++){
+//         //int number = createNumber((*code)[i],indices);
+//         //qDebug() << (*code)[i];
+//         step = (*code)[i]%2 ? evenStep++ : oddStep++;
+//         Node* node = new Node(this, (*code)[i]%2,(*code)[i]);
+//         nodeVector.append(node);
+//         //nodeVector.append(new Node(this, (*code)[i] % 2, (*code)[i]));
+//         //nodeVector[i]->setEdgeNumber(number);
+//        QVector<double> *coordinates = createLevelCoordinates((*code)[i] % 2, start, dx*step);
+//       // qDebug() << *coordinates;
 //        scene->addItem(nodeVector[i]);
-//        nodeVector[i]->setPos(nodeVector[i]->coordinates->projectedX, nodeVector[i]->coordinates->projectedY);
-        QVector<double> *tempVector = createLevelCoordinates(std::bitset<sizeof(int)>(number).count() % 2, start, dx*step);
-        qDebug() << *tempVector;
-        scene->addItem(nodeVector[i]);
-        nodeVector[i]->setPos((*tempVector)[0],(*tempVector)[1]);
+//        nodeVector[i]->setPos((*coordinates)[0],(*coordinates)[1]);
+//    }
+
+
+//    int number = 0;
+//    for(int i = 0; i < numNodes; i++){
+//        if(nodeVector[i]->getBoson()){
+//            for(int j = 0; j < numNodes; j++){
+//                if(!(nodeVector[j]->getBoson())){
+//                    int firstNodeNumber = nodeVector[i]->getNodeNumber();
+//                    int secondNodeNumber = nodeVector[j]->getNodeNumber();
+//                     qDebug() << firstNodeNumber <<"," << secondNodeNumber;
+//                    int result = firstNodeNumber^secondNodeNumber;
+
+//                            scene->addItem(new Edge(nodeVector[i],nodeVector[j],false,colors[getDifferingPlace(firstNodeNumber,secondNodeNumber)-1]));
+//                            number++;
+
+//                }
+//            }
+//        }
+//    }
+
+//    for(int i = 0; i < numNodes; i++){
+//        int firstNodeNumber = nodeVector[i]->getNodeNumber();
+//            for(int j = i+1; j < numNodes; j++){
+//                int secondNodeNumber = nodeVector[j]->getNodeNumber();
+//                qDebug() << firstNodeNumber <<"," << secondNodeNumber;
+//                qDebug() << ((!(firstNodeNumber%2) && secondNodeNumber%2) || (firstNodeNumber%2 && !(secondNodeNumber%2)));
+//                bool match = (!(firstNodeNumber%2)) ? ((!(firstNodeNumber%2) && secondNodeNumber%2)) : (firstNodeNumber%2 && !(secondNodeNumber%2));
+//                if(match){
+//                    int result = firstNodeNumber^secondNodeNumber;
+//                    for(int color = 0; color < 4; color++){
+//                       // qDebug() << result;
+//                        if(result&1){
+//                            qDebug() << color;
+//                            scene->addItem(new Edge(nodeVector[i],nodeVector[j],false,colors[color]));
+//                        }
+//                        result = result >> 1;
+//                    }
+//                }
+
+//            }
+
+
+//    }
+//    for(int i = 0; i < numNodes; i++){
+//        for(int j = i + 1; j < numNodes ; j++){
+//            std::bitset<sizeof(int)> result (nodeVector[i]->getNodeEdgeNumber() ^ nodeVector[j]->getNodeEdgeNumber());
+//            //std::cout << result<< endl;
+//            if(result.count() == 1){
+//                int iNum = nodeVector[i]->getNodeEdgeNumber();
+//                int jNum = nodeVector[j]->getNodeEdgeNumber();
+//                qDebug() << "I:" << iNum << "J:" << jNum;
+//                qDebug() <<"Differing Value: "<< getDifferingPlace(iNum,jNum);
+//                qDebug() << "SHIFTED VALUE:" << ( ) << endl;
+
+//                scene->addItem(new Edge(nodeVector[i], nodeVector[j], std::bitset<sizeof(int)> (iNum >> getDifferingPlace(iNum,jNum)).count()%2, colors[getDifferingPlace(iNum,jNum)-1]));
+
+//            }
+//        }
+
+
+//    }
+    bfs();
+    connect(timer, &QTimer::timeout, this, &GraphWidget::doStep);
+}
+
+void GraphWidget::bfs()
+{
+    //Mark all nodes as not visited
+    for(int node = 0; node < nodeVector.count(); node++){
+        nodeVector[node]->visited = false;
+        nodeVector[node]->height = 0;
     }
+    QQueue<Node*> q = QQueue<Node*>();
+    //Maybe add a node as a parameter but for now just the first
+    q.enqueue(nodeVector[0]);
 
-    for(int i = 0; i < numNodes; i++){
+    int dx = 90;
+    int dy = 125;
 
-    }
-    for(int i = 0; i < numNodes; i++){
-        for(int j = i + 1; j < numNodes ; j++){
-            std::bitset<sizeof(int)> result (nodeVector[i]->getNodeEdgeNumber() ^ nodeVector[j]->getNodeEdgeNumber());
-            //std::cout << result<< endl;
-            if(result.count() == 1){
-                int iNum = nodeVector[i]->getNodeEdgeNumber();
-                int jNum = nodeVector[j]->getNodeEdgeNumber();
-                qDebug() << "I:" << iNum << "J:" << jNum;
-                qDebug() <<"Differing Value: "<< getDifferingPlace(iNum,jNum);
-                qDebug() << "SHIFTED VALUE:" << (std::bitset<sizeof(int)> (iNum >> getDifferingPlace(iNum,jNum)).count()%2) << endl;
+    int start = -180;
 
-                scene->addItem(new Edge(nodeVector[i], nodeVector[j], std::bitset<sizeof(int)> (iNum >> getDifferingPlace(iNum,jNum)).count()%2, colors[getDifferingPlace(iNum,jNum)-1]));
+    int height = 1;
+    int prevHeight = 0;
+    int numNodesOnLine = 0;
+
+    while(!q.isEmpty()){
+        Node *n = q.dequeue();
+        if(!n->visited){
+
+            n->visited = true;
+
+            if(prevHeight != n->height){
+                height++;
+                prevHeight = n->height;
+                numNodesOnLine = 0;
+            }else{
+                numNodesOnLine++;
 
             }
+
+            n->setPos(start+(numNodesOnLine*dx), n->height*dy);
+
+
+
+
+            //Do math here
+
+            QList<Edge*> edgeList = n->getEdgeList();
+            for(int edge = 0;edge < edgeList.count(); edge++){
+                Node* nextNode = edgeList[edge]->sourceNode()->getNodeNumber() == n->getNodeNumber() ?  edgeList[edge]->destNode() :  edgeList[edge]->sourceNode();
+                nextNode->height = height;
+                q.enqueue(nextNode);
+            }
+
         }
-
-
     }
-    connect(timer, &QTimer::timeout, this, &GraphWidget::doStep);
 }
 
 void GraphWidget::keyPressEvent(QKeyEvent *event)
@@ -188,7 +386,7 @@ void GraphWidget::keyPressEvent(QKeyEvent *event)
         break;
     case Qt::Key_Space:
     case Qt::Key_Enter:
-        shuffle();
+       // shuffle();
         break;
     default:
         QGraphicsView::keyPressEvent(event);
